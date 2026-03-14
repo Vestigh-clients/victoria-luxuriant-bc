@@ -302,13 +302,12 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto flex items-center justify-between py-5 px-4">
-          <Link
-            to="/"
-            className={`font-display text-2xl font-bold tracking-wider transition-colors ${
-              isHome ? "text-white" : "text-primary"
-            }`}
-          >
-            LUXURIANT
+          <Link to="/" aria-label="Luxuriant home" className="inline-flex items-center">
+            <img
+              src="/assets/vicky_logo_blue.png"
+              alt="Luxuriant"
+              className="h-10 w-auto sm:h-12 lg:h-14"
+            />
           </Link>
 
           <div className="hidden lg:flex items-center gap-7">

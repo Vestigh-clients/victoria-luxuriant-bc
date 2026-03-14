@@ -349,6 +349,15 @@ const AdminLayout = () => {
               Sign Out
             </button>
           </div>
+
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-block font-body text-[10px] uppercase tracking-[0.1em] text-[#555555] transition-colors hover:text-[#888888]"
+          >
+            View Store &rarr;
+          </a>
         </div>
 
         <Outlet />
