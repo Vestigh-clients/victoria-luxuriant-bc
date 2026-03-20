@@ -1,5 +1,6 @@
 import { Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
+import StoreLogo from "@/components/StoreLogo";
 import { storeConfig } from "@/config/store.config";
 import { getWhatsAppContactLink } from "@/lib/contact";
 
@@ -21,7 +22,9 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="md:col-span-1">
-            <h3 className="mb-2 font-display text-2xl font-bold tracking-wider">{storeConfig.storeName}</h3>
+            <div className="mb-2">
+              <StoreLogo className="h-9 w-auto" textClassName="text-2xl font-bold tracking-wider text-primary-foreground" />
+            </div>
             <p className="mb-3 font-body text-xs italic text-primary-foreground/60">{storeConfig.storeTagline}</p>
             <p className="font-body text-sm leading-relaxed text-primary-foreground/70">
               Luxury fashion essentials, curated for your store.

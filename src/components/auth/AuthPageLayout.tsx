@@ -1,5 +1,6 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
+import StoreLogo from "@/components/StoreLogo";
 import { storeConfig } from "@/config/store.config";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-bg.jpg";
@@ -17,7 +18,7 @@ const AuthPageLayout = ({ children, contentClassName }: AuthPageLayoutProps) => 
         <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--color-primary-rgb),0.3),rgba(var(--color-primary-rgb),0.5))]" />
 
         <div className="absolute bottom-10 left-10">
-          <p className="font-display text-[32px] italic text-white">{storeConfig.storeName}</p>
+          <StoreLogo className="h-12 w-auto" textClassName="text-[32px] text-white" />
           <p className="mt-2 font-body text-[12px] text-[rgba(var(--color-secondary-rgb),0.7)]">{storeConfig.storeTagline}</p>
         </div>
       </aside>
@@ -28,7 +29,7 @@ const AuthPageLayout = ({ children, contentClassName }: AuthPageLayoutProps) => 
             to="/"
             className="mb-10 text-center font-display text-[30px] italic text-[var(--color-primary)] md:hidden"
           >
-            {storeConfig.storeName}
+            <StoreLogo className="mx-auto h-11 w-auto" textClassName="text-[30px] text-[var(--color-primary)]" />
           </Link>
 
           {children}
@@ -39,5 +40,3 @@ const AuthPageLayout = ({ children, contentClassName }: AuthPageLayoutProps) => 
 };
 
 export default AuthPageLayout;
-
-

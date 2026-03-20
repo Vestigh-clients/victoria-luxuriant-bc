@@ -8,14 +8,34 @@ interface StoreLogoProps {
   alt?: string;
 }
 
+const resolveLogoUrl = (logoUrl: string) => {
+  const trimmedLogoUrl = logoUrl.trim();
+  if (!trimmedLogoUrl) {
+    return "";
+  }
+
+  const isAbsoluteUrl = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(trimmedLogoUrl);
+  if (trimmedLogoUrl.startsWith("/") || isAbsoluteUrl) {
+    return trimmedLogoUrl;
+  }
+
+  const normalizedBaseUrl = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  const normalizedPath = trimmedLogoUrl.replace(/^\.?\//, "");
+
+  return `${normalizedBaseUrl}${normalizedPath}`;
+};
+
 const StoreLogo = ({ className, textClassName, alt }: StoreLogoProps) => {
   const [hasImageError, setHasImageError] = useState(false);
-  const hasLogo = Boolean(storeConfig.logoUrl?.trim()) && !hasImageError;
+  const resolvedLogoUrl = resolveLogoUrl(storeConfig.logoUrl);
+  const hasLogo = Boolean(resolvedLogoUrl) && !hasImageError;
 
   if (hasLogo) {
     return (
       <img
-        src={storeConfig.logoUrl}
+        src={resolvedLogoUrl}
         alt={alt ?? storeConfig.storeName}
         className={className}
         onError={() => setHasImageError(true)}

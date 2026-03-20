@@ -1,6 +1,7 @@
 ﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
+import StoreLogo from "@/components/StoreLogo";
 import { storeConfig } from "@/config/store.config";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -317,7 +318,10 @@ const AdminLayout = () => {
           </span>
         </button>
 
-        <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--color-secondary)]">{storeConfig.storeName}</p>
+        <StoreLogo
+          className="h-5 w-auto max-w-[140px]"
+          textClassName="not-italic font-body text-[11px] uppercase tracking-[0.2em] text-[var(--color-secondary)]"
+        />
 
         <div className="relative" ref={mobileDropdownRef}>
           <button
@@ -386,7 +390,7 @@ const AdminLayout = () => {
         aria-hidden={!drawerOpen}
       >
         <div className="flex items-center justify-between border-b border-[var(--color-primary)] px-5 pb-5 pt-6">
-          <p className="font-display text-[20px] italic text-[var(--color-secondary)]">{storeConfig.storeName}</p>
+          <StoreLogo className="h-8 w-auto max-w-[170px]" textClassName="text-[20px] text-[var(--color-secondary)]" />
           <button
             type="button"
             onClick={closeDrawer}
@@ -451,8 +455,8 @@ const AdminLayout = () => {
 
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[240px] flex-col bg-[var(--color-primary)] lg:flex">
         <div className="border-b border-[var(--color-primary)] px-6 pb-4">
-          <Link to="/" className="block pt-8 font-display text-[22px] italic text-[var(--color-secondary)]">
-            {storeConfig.storeName}
+          <Link to="/" className="block pt-8">
+            <StoreLogo className="h-9 w-auto max-w-[180px]" textClassName="text-[22px] text-[var(--color-secondary)]" />
           </Link>
           <p className="mt-4 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-muted)]">Admin Panel</p>
         </div>
