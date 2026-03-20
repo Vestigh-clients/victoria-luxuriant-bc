@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { canConfigurePaymentMethods } from "@/services/paystackService";
 import { getPaymentSettings, updatePaymentSettings, type PaymentSettings } from "@/services/paymentSettingsService";
-
+//ok
 const PaymentMethodsConfig = () => {
   const [settings, setSettings] = useState<PaymentSettings | null>(null);
   const [initialSettings, setInitialSettings] = useState<PaymentSettings | null>(null);
