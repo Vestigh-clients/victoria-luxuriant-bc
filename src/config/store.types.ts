@@ -1,4 +1,4 @@
-export type BorderRadiusPreset = "sm" | "md" | "lg";
+export type BorderRadiusPreset = "sm" | "md" | "lg"| "xl";
 export type CurrencyPosition = "before" | "after";
 export type PaymentMode = "subaccount" | "own_account";
 export type PaystackChargeBearer = "account" | "subaccount";
