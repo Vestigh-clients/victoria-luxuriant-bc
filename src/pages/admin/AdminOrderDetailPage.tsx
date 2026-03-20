@@ -233,8 +233,8 @@ const AdminOrderDetailPage = () => {
 
   return (
     <div className="admin-page">
-      <div className="order-detail-layout grid gap-10 lg:grid-cols-[65%_35%]">
-        <div className="order-detail-left">
+      <div className="order-detail-layout grid gap-10 lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)]">
+        <div className="order-detail-left min-w-0">
           <header>
             <h1 className="admin-page-title font-display text-[32px] italic text-[var(--color-primary)]">{order.order_number}</h1>
             <p className="mt-1 font-body text-[11px] text-[var(--color-muted-soft)]">{formatDateLong(order.created_at)}</p>
@@ -381,7 +381,7 @@ const AdminOrderDetailPage = () => {
           </section>
         </div>
 
-        <aside className="order-detail-right border-l border-[var(--color-border)] pl-0 lg:sticky lg:top-20 lg:h-fit lg:pl-10">
+        <aside className="order-detail-right min-w-0 border-l border-[var(--color-border)] pl-0 lg:sticky lg:top-20 lg:h-fit lg:pl-10">
           <section>
             <p className="mb-4 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Update Status</p>
             <select

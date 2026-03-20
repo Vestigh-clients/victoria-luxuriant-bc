@@ -30,6 +30,7 @@ interface ProfileMenuProps {
   userEmail: string;
   menuId: string;
   containerRef: RefObject<HTMLDivElement>;
+  triggerClassName: string;
   onToggle: () => void;
   onClose: () => void;
   onSignOut: () => void;
@@ -42,6 +43,7 @@ const ProfileMenu = ({
   userEmail,
   menuId,
   containerRef,
+  triggerClassName,
   onToggle,
   onClose,
   onSignOut,
@@ -55,7 +57,7 @@ const ProfileMenu = ({
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-controls={menuId}
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] font-body text-[12px] text-[var(--color-secondary)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+        className={triggerClassName}
       >
         {userInitial}
       </button>
@@ -78,7 +80,7 @@ const ProfileMenu = ({
                 to={link.to}
                 onClick={onClose}
                 role="menuitem"
-                className="block px-4 py-2.5 font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:bg-[rgba(var(--color-primary-rgb),0.08)] hover:text-[var(--color-accent)]"
+                className="block cursor-pointer px-4 py-2.5 font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors duration-300 hover:bg-[rgba(var(--color-primary-rgb),0.08)] hover:text-[var(--color-accent)]"
               >
                 {link.label}
               </Link>
@@ -92,7 +94,7 @@ const ProfileMenu = ({
               onSignOut();
             }}
             role="menuitem"
-            className="w-full border-t border-[var(--color-border)] px-4 py-3 text-left font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] transition-colors hover:bg-[rgba(var(--color-primary-rgb),0.08)] hover:text-[var(--color-danger)]"
+            className="w-full cursor-pointer border-t border-[var(--color-border)] px-4 py-3 text-left font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] transition-colors duration-300 hover:bg-[rgba(var(--color-primary-rgb),0.08)] hover:text-[var(--color-danger)]"
           >
             Sign Out
           </button>
@@ -247,10 +249,17 @@ const Navbar = () => {
   const solidNavMutedTextClass = "text-[rgba(var(--color-navbar-solid-foreground-rgb),0.78)]";
   const solidNavInteractiveTextClass = "text-[var(--color-navbar-solid-interactive)]";
   const solidNavInteractiveHoverClass = "hover:text-[var(--color-navbar-solid-interactive)]";
-  const navTextColor = isTransparentRoute ? "text-white" : solidNavTextClass;
-  const navDividerClass = isTransparentRoute ? "text-[var(--color-border)]" : "text-[rgba(var(--color-navbar-solid-foreground-rgb),0.35)]";
-  const navHoverClass = isTransparentRoute ? "hover:text-accent" : solidNavInteractiveHoverClass;
-  const navActiveClass = isTransparentRoute ? "text-accent font-semibold" : `${solidNavInteractiveTextClass} font-semibold`;
+  const navTextColor = isTransparentRoute ? "text-[var(--color-secondary)]" : solidNavTextClass;
+  const navDefaultTextClass = isTransparentRoute
+    ? "text-[rgba(var(--color-secondary-rgb),0.82)]"
+    : solidNavMutedTextClass;
+  const navActiveTextClass = isTransparentRoute ? "text-[var(--color-secondary)] font-medium" : `${solidNavInteractiveTextClass} font-medium`;
+  const navUnderlineClass = isTransparentRoute
+    ? "after:bg-[var(--color-secondary)]"
+    : "after:bg-[var(--color-navbar-solid-interactive)]";
+  const iconButtonHoverClass = isTransparentRoute
+    ? "hover:bg-[rgba(var(--color-secondary-rgb),0.1)]"
+    : "hover:bg-[rgba(var(--color-navbar-solid-foreground-rgb),0.08)]";
   const navLinks = useMemo(() => {
     if (enabledCategories.length === 0) {
       return baseNavLinks;
@@ -294,12 +303,12 @@ const Navbar = () => {
         setOpen(false);
         openCart();
       }}
-      className={`relative transition-colors ${navTextColor} ${navHoverClass}`}
+      className={`relative cursor-pointer rounded-full p-2 transition-all duration-300 ${navTextColor} ${iconButtonHoverClass}`}
     >
       <ShoppingBag size={20} strokeWidth={1.35} />
       {totalItems > 0 ? (
         <span
-          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[9px] font-medium leading-none text-[var(--color-primary)] transition-transform duration-200 ease-out ${badgeScaleClass}`}
+          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[9px] font-medium leading-none text-[var(--color-primary)] transition-transform duration-300 ease-out ${badgeScaleClass}`}
         >
           {totalItems > 99 ? "99+" : totalItems}
         </span>
@@ -308,18 +317,21 @@ const Navbar = () => {
   );
 
   const signInLinkClass = isTransparentRoute
-    ? "text-white/85 hover:text-[var(--color-accent)]"
+    ? "text-[rgba(var(--color-secondary-rgb),0.88)] hover:text-[var(--color-secondary)]"
     : `${solidNavTextClass} ${solidNavInteractiveHoverClass}`;
   const adminIconClass = isTransparentRoute
-    ? "text-white/85 hover:text-[var(--color-accent)]"
+    ? "text-[rgba(var(--color-secondary-rgb),0.86)] hover:text-[var(--color-secondary)]"
     : `${solidNavMutedTextClass} ${solidNavInteractiveHoverClass}`;
+  const profileTriggerClassName = isTransparentRoute
+    ? "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[rgba(var(--color-secondary-rgb),0.12)] font-body text-[12px] text-[var(--color-secondary)] transition-all duration-300 hover:bg-[rgba(var(--color-secondary-rgb),0.22)]"
+    : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[rgba(var(--color-primary-rgb),0.1)] font-body text-[12px] text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(var(--color-primary-rgb),0.2)]";
 
   const adminAction = isAuthenticated && isAdmin ? (
     <Link
       to="/admin"
       aria-label="Open admin panel"
       title="Admin Panel"
-      className={`transition-colors ${adminIconClass}`}
+      className={`cursor-pointer rounded-full p-2 transition-all duration-300 ${adminIconClass} ${iconButtonHoverClass}`}
     >
       <LayoutDashboard size={19} strokeWidth={1.4} />
     </Link>
@@ -333,6 +345,7 @@ const Navbar = () => {
       userEmail={userEmail}
       menuId="desktop-account-menu"
       containerRef={desktopUserMenuRef}
+      triggerClassName={profileTriggerClassName}
       onToggle={() => {
         setIsMobileUserMenuOpen(false);
         setIsDesktopUserMenuOpen((previous) => !previous);
@@ -341,7 +354,10 @@ const Navbar = () => {
       onSignOut={requestSignOut}
     />
   ) : (
-    <Link to="/auth/login" className={`font-body text-[11px] uppercase tracking-[0.1em] transition-colors ${signInLinkClass}`}>
+    <Link
+      to="/auth/login"
+      className={`cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
+    >
       Sign In
     </Link>
   );
@@ -354,6 +370,7 @@ const Navbar = () => {
       userEmail={userEmail}
       menuId="mobile-account-menu"
       containerRef={mobileUserMenuRef}
+      triggerClassName={profileTriggerClassName}
       onToggle={() => {
         setIsDesktopUserMenuOpen(false);
         setIsMobileUserMenuOpen((previous) => !previous);
@@ -362,7 +379,10 @@ const Navbar = () => {
       onSignOut={requestSignOut}
     />
   ) : (
-    <Link to="/auth/login" className={`font-body text-[11px] uppercase tracking-[0.1em] transition-colors ${signInLinkClass}`}>
+    <Link
+      to="/auth/login"
+      className={`cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
+    >
       Sign In
     </Link>
   );
@@ -370,44 +390,34 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`top-0 left-0 z-50 w-full transition-[background-color,border-color,backdrop-filter] duration-500 ${
+        className={`top-0 left-0 z-50 w-full transition-[background-color,border-color,backdrop-filter] duration-300 ${
           isTransparentRoute
             ? overlayHero
-              ? "absolute bg-transparent border-transparent"
-              : "fixed bg-black/55 backdrop-blur-md border-b border-white/15"
+              ? "fixed border-transparent bg-transparent"
+              : "fixed border-b border-[rgba(var(--color-secondary-rgb),0.16)] bg-[rgba(var(--color-primary-rgb),0.92)] backdrop-blur-md"
             : "sticky bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md border-b border-border"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between py-5 px-4">
-          <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex items-center">
+          <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex cursor-pointer items-center">
             <StoreLogo
               className="h-10 w-auto sm:h-12 lg:h-14"
-              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-white" : "text-foreground"}`}
+              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-[var(--color-secondary)]" : "text-foreground"}`}
             />
           </Link>
 
           <div className="hidden lg:flex items-center gap-7">
-            <div className="flex items-center">
-              {navLinks.map((link, index) => (
-                <div key={link.to} className="flex items-center">
-                  <Link
-                    to={link.to}
-                    className={`font-body text-[11px] uppercase tracking-[0.1em] transition-colors ${navHoverClass} ${
-                      isNavLinkActive(link.to)
-                        ? navActiveClass
-                        : isTransparentRoute
-                          ? "text-white/85"
-                          : solidNavMutedTextClass
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                  {index < navLinks.length - 1 ? (
-                    <span className={`mx-4 ${navDividerClass}`} aria-hidden="true">
-                      |
-                    </span>
-                  ) : null}
-                </div>
+            <div className="flex items-center gap-10">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`relative cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 after:absolute after:-bottom-[7px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+                    isNavLinkActive(link.to) ? `${navActiveTextClass} after:scale-x-100` : navDefaultTextClass
+                  } ${navUnderlineClass}`}
+                >
+                  {link.label}
+                </Link>
               ))}
             </div>
             {adminAction}
@@ -421,11 +431,26 @@ const Navbar = () => {
             {authActionMobile}
             <button
               type="button"
-              className={`${navTextColor}`}
+              className={`relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ${navTextColor} ${iconButtonHoverClass}`}
               onClick={() => setOpen(!open)}
               aria-label={open ? "Close menu" : "Open menu"}
             >
-              {open ? <X size={24} /> : <Menu size={24} />}
+              <span className="relative block h-6 w-6">
+                <Menu
+                  size={24}
+                  className={`absolute left-0 top-0 transition-all duration-300 ${
+                    open ? "rotate-45 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"
+                  }`}
+                  aria-hidden="true"
+                />
+                <X
+                  size={24}
+                  className={`absolute left-0 top-0 transition-all duration-300 ${
+                    open ? "rotate-0 scale-100 opacity-100" : "-rotate-45 scale-75 opacity-0"
+                  }`}
+                  aria-hidden="true"
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -434,7 +459,7 @@ const Navbar = () => {
           <div
             className={`lg:hidden px-4 pb-4 animate-fade-in ${
               isTransparentRoute
-                ? "bg-black/60 backdrop-blur-md border-b border-white/15"
+                ? "bg-[rgba(var(--color-primary-rgb),0.92)] backdrop-blur-md border-b border-[rgba(var(--color-secondary-rgb),0.16)]"
                 : "bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md border-b border-border"
             }`}
           >
@@ -443,12 +468,8 @@ const Navbar = () => {
                 key={link.to}
                 to={link.to}
                 onClick={() => setOpen(false)}
-                className={`block py-2.5 font-body text-[11px] uppercase tracking-[0.1em] transition-colors ${navHoverClass} ${
-                  isNavLinkActive(link.to)
-                    ? navActiveClass
-                    : isTransparentRoute
-                      ? "text-white/85"
-                      : solidNavMutedTextClass
+                className={`block cursor-pointer py-2.5 font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${
+                  isNavLinkActive(link.to) ? navActiveTextClass : navDefaultTextClass
                 }`}
               >
                 {link.label}
@@ -463,7 +484,7 @@ const Navbar = () => {
                   closeUserMenus();
                   requestSignOut();
                 }}
-                className={`mt-2 block w-full py-2.5 text-left font-body text-[11px] uppercase tracking-[0.1em] transition-colors ${signInLinkClass}`}
+                className={`mt-2 block w-full cursor-pointer py-2.5 text-left font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
               >
                 Sign Out
               </button>

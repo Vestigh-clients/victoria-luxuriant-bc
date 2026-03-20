@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ProductFetchErrorState from "@/components/products/ProductFetchErrorState";
 import ProductImagePlaceholder from "@/components/products/ProductImagePlaceholder";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { storeConfig } from "@/config/store.config";
 import { formatPrice } from "@/lib/price";
 import { getProductsByCategory } from "@/services/productService";
@@ -272,26 +273,50 @@ const CategoryPage = () => {
         </section>
 
         <section className="border-b border-[var(--color-border)] pb-8">
-          <div className="container mx-auto px-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-body text-[11px] font-light text-[var(--color-muted)]">
+          <div className="container mx-auto flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-3">
+            <p className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)]">
               Showing {loading ? CATEGORY_SKELETON_COUNT : sortedProducts.length} products
             </p>
 
-            <div className="relative inline-flex items-center gap-2 self-start sm:self-auto">
-              <span className="font-body text-[11px] font-light text-[var(--color-muted)]">Sort by:</span>
-              <select
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value as SortOption)}
-                className="appearance-none bg-transparent border-none p-0 pr-4 font-body text-[11px] font-light text-foreground focus:outline-none"
-                aria-label="Sort products"
-                disabled={loading}
-              >
-                <option value="featured">Featured</option>
-                <option value="price-low-high">Price Low-High</option>
-                <option value="price-high-low">Price High-Low</option>
-                <option value="newest">Newest</option>
-              </select>
-              <span className="pointer-events-none absolute right-0 font-body text-[11px] text-[var(--color-muted)]">v</span>
+            <div className="inline-flex items-center gap-3 self-start sm:self-auto">
+              <span className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)]">Sort by:</span>
+              <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)} disabled={loading}>
+                <SelectTrigger
+                  aria-label="Sort products"
+                  className="h-auto min-w-[170px] rounded-full border-[var(--color-border)] bg-[rgba(var(--color-primary-rgb),0.03)] px-4 py-2 font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-primary)] shadow-none ring-offset-0 transition-colors duration-200 hover:border-[var(--color-accent)] focus:ring-0 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-60 [&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:opacity-70"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent
+                  className="border-[var(--color-border)] bg-[var(--color-secondary)] text-[var(--color-primary)] shadow-[0_12px_30px_rgba(var(--color-primary-rgb),0.14)]"
+                  position="popper"
+                >
+                  <SelectItem
+                    value="featured"
+                    className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-primary)] focus:bg-[rgba(var(--color-primary-rgb),0.08)] focus:text-[var(--color-primary)]"
+                  >
+                    Featured
+                  </SelectItem>
+                  <SelectItem
+                    value="price-low-high"
+                    className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-primary)] focus:bg-[rgba(var(--color-primary-rgb),0.08)] focus:text-[var(--color-primary)]"
+                  >
+                    Price Low-High
+                  </SelectItem>
+                  <SelectItem
+                    value="price-high-low"
+                    className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-primary)] focus:bg-[rgba(var(--color-primary-rgb),0.08)] focus:text-[var(--color-primary)]"
+                  >
+                    Price High-Low
+                  </SelectItem>
+                  <SelectItem
+                    value="newest"
+                    className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-primary)] focus:bg-[rgba(var(--color-primary-rgb),0.08)] focus:text-[var(--color-primary)]"
+                  >
+                    Newest
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </section>
@@ -304,7 +329,7 @@ const CategoryPage = () => {
 
                   return (
                     <div key={`skeleton-chunk-${chunkIndex}`} className="space-y-[80px]">
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-stretch md:gap-6">
+                      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
                         {firstProduct !== undefined ? (
                           <div className="h-full">
                             <CardSkeleton variant="large" />
@@ -351,7 +376,7 @@ const CategoryPage = () => {
 
                   return (
                     <div key={`${category.slug}-chunk-${chunkIndex}`} className="space-y-[80px]">
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-stretch md:gap-6">
+                      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
                         {firstProduct ? (
                           <div className="h-full">
                             <CategoryProductCard product={firstProduct} variant="large" />

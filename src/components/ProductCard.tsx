@@ -9,27 +9,27 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const imageUrl = getPrimaryImage(product);
+  const image = getPrimaryImage(product);
   const [hasImageError, setHasImageError] = useState(false);
 
   useEffect(() => {
     setHasImageError(false);
-  }, [imageUrl, product.id]);
+  }, [image, product.id]);
 
   return (
     <div className="group bg-card rounded-[var(--border-radius)] overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(var(--color-primary-rgb),0.12)]">
       <Link to={`/shop/${product.slug}`} className="block">
-        <div className="aspect-[4/5] overflow-hidden bg-muted/20">
-          {imageUrl && !hasImageError ? (
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "3/4" }}>
+          {image && !hasImageError ? (
             <img
-              src={imageUrl}
+              src={image}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               onError={() => setHasImageError(true)}
             />
           ) : (
-            <ProductImagePlaceholder className="h-full w-full" />
+            <ProductImagePlaceholder className="absolute inset-0 h-full w-full" />
           )}
         </div>
       </Link>

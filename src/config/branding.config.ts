@@ -7,10 +7,10 @@ export const brandingConfig: BrandingConfig = {
   faviconUrl: "/favicon.ico",
 
   theme: {
-    primaryColor: "#243843", // main dark teal panel
-    secondaryColor: "#F2F2F2", // light background from top section
-    accentColor: "#6B7C85", // soft neutral accent from UI elements
-    navbarSolidBackgroundColor: "#243843",
+     primaryColor: "#0B0B0B", // deep black (not pure #000 for better UI depth)
+  secondaryColor: "#FFFFFF", // clean white background
+  accentColor: "#7A7A7A", // neutral grey for subtle elements
+  navbarSolidBackgroundColor: "#0B0B0B",
     fontHeading: "Playfair Display", // matches elegant brand feel
     fontBody: "Inter",
     borderRadius: "xl", // rounded cards in service grid

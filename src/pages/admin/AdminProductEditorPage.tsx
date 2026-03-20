@@ -1663,8 +1663,8 @@ const AdminProductEditorPage = () => {
         </div>
       </div>
 
-      <div className="product-form-layout flex flex-col gap-10 lg:grid lg:grid-cols-[58%_42%] lg:gap-[60px]">
-        <div className="product-form-left">
+      <div className="product-form-layout flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] lg:gap-[60px]">
+        <div className="product-form-left min-w-0">
           <p className={sectionLabelClass}>Basic Information</p>
 
           <div>
@@ -2371,7 +2371,7 @@ const AdminProductEditorPage = () => {
           ) : null}
         </div>
 
-        <div className="product-form-right">
+        <div className="product-form-right min-w-0">
           <p className="mb-4 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Product Images</p>
           <p className="mb-4 font-body text-[10px] text-[var(--color-muted-soft)]">
             First image is primary. Max 6 images, 2MB each.

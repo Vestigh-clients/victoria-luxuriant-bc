@@ -209,8 +209,8 @@ const AdminCustomerDetailPage = () => {
 
   return (
     <div className="admin-page">
-      <div className="customer-detail-layout grid gap-10 lg:grid-cols-[65%_35%]">
-        <div className="customer-detail-left">
+      <div className="customer-detail-layout grid gap-10 lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)]">
+        <div className="customer-detail-left min-w-0">
           <header>
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-[var(--color-primary)] font-body text-[24px] text-[var(--color-secondary)]">
@@ -437,7 +437,7 @@ const AdminCustomerDetailPage = () => {
           </section>
         </div>
 
-        <aside className="customer-detail-right border-l border-[var(--color-border)] pl-0 lg:sticky lg:top-20 lg:h-fit lg:pl-10">
+        <aside className="customer-detail-right min-w-0 border-l border-[var(--color-border)] pl-0 lg:sticky lg:top-20 lg:h-fit lg:pl-10">
           <section>
             <p className="mb-4 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Account Status</p>
             <span
