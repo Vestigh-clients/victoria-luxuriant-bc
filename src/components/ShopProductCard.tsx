@@ -52,8 +52,10 @@ const ShopProductCard = ({ product, size = "regular" }: ShopProductCardProps) =>
   };
 
   const imageHoverOverlay = (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-12 translate-y-full items-center justify-center bg-[rgba(var(--color-primary-rgb),0.88)] transition-transform duration-300 ease-in-out group-hover:translate-y-0">
-      <span className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-secondary)]">Add to Cart</span>
+    <div className="pointer-events-none absolute inset-0 flex items-end bg-[linear-gradient(to_top,rgba(var(--color-primary-rgb),0.78)_0%,rgba(var(--color-primary-rgb),0)_60%)] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+      <div className="mb-3 ml-3 rounded-[var(--border-radius)] border border-[rgba(var(--color-secondary-rgb),0.4)] bg-[rgba(var(--color-primary-rgb),0.72)] px-3 py-1">
+        <span className="font-body text-[10px] uppercase tracking-[0.14em] text-[var(--color-secondary)]">View Product</span>
+      </div>
     </div>
   );
 
@@ -82,11 +84,7 @@ const ShopProductCard = ({ product, size = "regular" }: ShopProductCardProps) =>
               {categoryLabel}
             </p>
 
-            <Link to={`/shop/${product.slug}`} className="mb-2 block">
-              <h3 className="font-display text-[24px] font-normal italic leading-[1.2] text-[var(--color-primary)]">{product.name}</h3>
-            </Link>
-
-            <p className="mb-7 font-body text-[13px] font-light text-[var(--color-muted)]">{formatPrice(product.price)}</p>
+            <p className="mb-7 font-display text-[30px] font-semibold leading-none text-[var(--color-primary)]">{formatPrice(product.price)}</p>
             {isOutOfStock ? (
               <p className="mb-6 font-body text-[10px] uppercase tracking-[0.08em] text-[var(--color-muted-soft)]">Out of Stock</p>
             ) : null}
@@ -106,14 +104,14 @@ const ShopProductCard = ({ product, size = "regular" }: ShopProductCardProps) =>
   }
 
   return (
-    <article className="group bg-transparent">
-      <div className="relative aspect-[4/5] w-full overflow-hidden">
+    <article className="group bg-transparent transition-transform duration-300 ease-out hover:-translate-y-1">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--border-radius)] border border-transparent bg-[rgba(var(--color-primary-rgb),0.02)] transition-all duration-300 ease-out group-hover:border-[rgba(var(--color-primary-rgb),0.12)] group-hover:shadow-[0_14px_28px_rgba(var(--color-primary-rgb),0.08)]">
         <Link to={`/shop/${product.slug}`} className="block h-full">
           {imageUrl && !hasImageError ? (
             <img
               src={imageUrl}
               alt={product.name}
-              className="h-full w-full object-cover object-center transition-transform ease-out [transition-duration:400ms] group-hover:scale-[1.04]"
+              className="h-full w-full object-cover object-center transition-transform ease-out [transition-duration:450ms] group-hover:scale-[1.035]"
               loading="lazy"
               onError={() => setHasImageError(true)}
             />
@@ -125,10 +123,7 @@ const ShopProductCard = ({ product, size = "regular" }: ShopProductCardProps) =>
       </div>
 
       <div className="mt-3 text-left">
-        <Link to={`/shop/${product.slug}`}>
-          <h3 className="font-display text-[15px] font-normal italic leading-snug text-[var(--color-primary)]">{product.name}</h3>
-        </Link>
-        <p className="mt-1 font-body text-[12px] font-light text-[var(--color-muted)]">{formatPrice(product.price)}</p>
+        <p className="mt-1 font-display text-[21px] font-semibold leading-none text-[var(--color-primary)]">{formatPrice(product.price)}</p>
         {isOutOfStock ? (
           <p className="mt-1 font-body text-[10px] uppercase tracking-[0.08em] text-[var(--color-muted-soft)]">Out of Stock</p>
         ) : null}

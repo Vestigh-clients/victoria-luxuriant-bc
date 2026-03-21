@@ -13,13 +13,16 @@ type TryOnModalProps = {
   onClose: () => void;
 };
 
+const ALLOWED_TRYON_IMAGE_TYPES = ["image/jpeg", "image/png"] as const;
+const MAX_TRYON_UPLOAD_MB = 20;
+const MAX_TRYON_UPLOAD_BYTES = MAX_TRYON_UPLOAD_MB * 1024 * 1024;
+
 const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
   const [tryOnState, setTryOnState] = useState<TryOnState>("upload");
   const [modelFile, setModelFile] = useState<File | null>(null);
   const [modelPreview, setModelPreview] = useState<string | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [resultImage, setResultImage] = useState<string | null>(null);
-  const [compositeImage, setCompositeImage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
@@ -78,7 +81,6 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
     setModelPreview(null);
     setProgress(0);
     setResultImage(null);
-    setCompositeImage(null);
     setErrorMessage(null);
     setIsRetrying(false);
     setRetryCount(0);
@@ -97,18 +99,15 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
       return;
     }
 
-    const allowedTypes = ["image/jpeg", "image/png"];
-    const maxSizeBytes = 5 * 1024 * 1024;
-
-    if (!allowedTypes.includes(file.type)) {
+    if (!ALLOWED_TRYON_IMAGE_TYPES.includes(file.type as (typeof ALLOWED_TRYON_IMAGE_TYPES)[number])) {
       setTryOnState("error");
       setErrorMessage("Please upload a JPG or PNG image.");
       return;
     }
 
-    if (file.size > maxSizeBytes) {
+    if (file.size > MAX_TRYON_UPLOAD_BYTES) {
       setTryOnState("error");
-      setErrorMessage("Image is too large. Please upload a file up to 5MB.");
+      setErrorMessage(`Image is too large. Please upload a file up to ${MAX_TRYON_UPLOAD_MB}MB.`);
       return;
     }
 
@@ -175,9 +174,8 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
           setRetryCount(count);
           setRetryReason(reason);
         },
-        onComplete: (result, composite) => {
+        onComplete: (result) => {
           setResultImage(result);
-          setCompositeImage(composite);
           setIsRetrying(false);
           setTryOnState("result");
         },
@@ -208,7 +206,7 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
       aria-label="Virtual Try-On"
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-[520px] overflow-y-auto rounded-[var(--border-radius)] bg-[var(--color-secondary)] p-7 sm:p-10"
+        className="lux-hide-scrollbar relative max-h-[90vh] w-full max-w-[520px] overflow-y-auto rounded-[var(--border-radius)] bg-[var(--color-secondary)] p-7 sm:p-10"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -235,7 +233,7 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
               >
                 <Camera size={32} strokeWidth={1.25} className="mx-auto mb-3 text-[var(--color-border)]" />
                 <p className="font-body text-[13px] text-[var(--color-muted)]">Upload a photo of yourself</p>
-                <p className="mt-2 font-body text-[10px] text-[var(--color-muted-soft)]">JPG or PNG - Max 5MB</p>
+                <p className="mt-2 font-body text-[10px] text-[var(--color-muted-soft)]">JPG or PNG - Max {MAX_TRYON_UPLOAD_MB}MB</p>
               </button>
             ) : (
               <div>
@@ -325,13 +323,6 @@ const TryOnModal = ({ product, isOpen, onClose }: TryOnModalProps) => {
                 alt={`${product.name} virtual try-on`}
                 className="max-h-[480px] w-full rounded-[var(--border-radius)] object-contain"
               />
-            ) : null}
-
-            {compositeImage ? (
-              <div>
-                <p className="mb-2 mt-4 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-muted-soft)]">Outfit Preview</p>
-                <img src={compositeImage} alt="Outfit preview" className="h-[120px] w-full object-contain" />
-              </div>
             ) : null}
 
             <button

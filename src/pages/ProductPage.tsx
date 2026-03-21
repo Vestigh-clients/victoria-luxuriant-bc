@@ -4,6 +4,7 @@ import ShopProductCard from "@/components/ShopProductCard";
 import TryOnModal from "@/components/TryOnModal";
 import ProductFetchErrorState from "@/components/products/ProductFetchErrorState";
 import ProductImagePlaceholder from "@/components/products/ProductImagePlaceholder";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { storeConfig } from "@/config/store.config";
 import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -76,12 +77,12 @@ const shoeSizeGuideRows = [
 const ProductPageSkeleton = () => {
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="mb-10 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="lux-product-shimmer h-4 w-28" />
         <div className="lux-product-shimmer h-4 w-64" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 xl:gap-16">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,54fr)_minmax(0,46fr)] lg:gap-12 xl:gap-14">
         <div className="space-y-4">
           <div className="lux-product-shimmer h-[75vh] min-h-[520px] w-full" />
           <div className="grid gap-3 grid-cols-4">
@@ -91,20 +92,27 @@ const ProductPageSkeleton = () => {
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="min-w-0 flex flex-col">
           <div className="lux-product-shimmer mb-3 h-3 w-24" />
-          <div className="lux-product-shimmer mb-5 h-12 w-3/4" />
-          <div className="lux-product-shimmer h-8 w-40" />
-          <div className="mt-7 lux-product-shimmer h-11 w-44" />
-          <div className="my-6 border-b border-[var(--color-border)]" />
+          <div className="lux-product-shimmer mb-4 h-12 w-[88%]" />
+          <div className="lux-product-shimmer h-9 w-44" />
+          <div className="mt-3 flex gap-2">
+            <div className="lux-product-shimmer h-6 w-36" />
+            <div className="lux-product-shimmer h-6 w-28" />
+          </div>
+          <div className="mt-6 space-y-3">
+            <div className="lux-product-shimmer h-11 w-full" />
+            <div className="lux-product-shimmer h-11 w-full" />
+          </div>
+          <div className="my-8 border-b border-[var(--color-border)]" />
           <div className="space-y-3">
             <div className="lux-product-shimmer h-4 w-full" />
             <div className="lux-product-shimmer h-4 w-[90%]" />
             <div className="lux-product-shimmer h-4 w-[82%]" />
           </div>
-          <div className="my-8 grid grid-cols-2 gap-[1px]">
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={`benefit-skeleton-${index}`} className="lux-product-shimmer h-[108px]" />
+              <div key={`benefit-skeleton-${index}`} className="lux-product-shimmer h-[116px]" />
             ))}
           </div>
         </div>
@@ -133,6 +141,13 @@ const toString = (value: unknown, fallback = ""): string => {
 };
 
 const toBoolean = (value: unknown): boolean => value === true;
+
+const normalizeBenefitText = (value: string): string =>
+  value
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (character) => character.toUpperCase());
 
 const mapProductRecord = (value: Record<string, unknown>): Product => {
   const categoryCandidate = Array.isArray(value.categories) ? value.categories[0] : value.categories;
@@ -432,22 +447,12 @@ const ProductPage = () => {
 
   const primaryImage = useMemo(() => (product ? getPrimaryImage(product) : ""), [product]);
 
-  const benefitTiles = useMemo(() => {
+  const productNarrative = useMemo(() => {
     if (!product) {
-      return [];
+      return "";
     }
 
-    const labels = (product.benefits ?? [])
-      .map((benefit) => benefit.label || benefit.description)
-      .filter((benefit): benefit is string => Boolean(benefit && benefit.trim()));
-
-    const tiles = [...labels.slice(0, 4)];
-
-    while (tiles.length < 4) {
-      tiles.push("Premium Quality");
-    }
-
-    return tiles;
+    return (product.description || "").trim();
   }, [product]);
 
   const categorySlug = product?.categories?.slug ?? "";
@@ -511,6 +516,76 @@ const ProductPage = () => {
     () => sortedOptionTypes.find((optionType) => optionType.name.toLowerCase().includes("size")) ?? null,
     [sortedOptionTypes],
   );
+  const productDetailItems = useMemo(() => {
+    if (!product) {
+      return [];
+    }
+
+    const fromBenefits = (product.benefits ?? [])
+      .map((benefit) => {
+        const title = normalizeBenefitText((benefit.label || benefit.description || "").trim());
+        const description = (benefit.description || benefit.label || "").trim();
+
+        if (!title && !description) {
+          return null;
+        }
+
+        return {
+          title: title || normalizeBenefitText(description),
+          description: description || title,
+        };
+      })
+      .filter((item): item is { title: string; description: string } => Boolean(item));
+
+    if (fromBenefits.length > 0) {
+      return fromBenefits;
+    }
+
+    const fromTags = (product.tags ?? [])
+      .map((tag) => normalizeBenefitText(tag))
+      .filter(Boolean)
+      .map((tag) => ({
+        title: tag,
+        description: `Crafted for ${tag.toLowerCase()} and day-to-night wear.`,
+      }));
+
+    if (fromTags.length > 0) {
+      return fromTags;
+    }
+
+    return [
+      {
+        title: "Premium Quality",
+        description: "Carefully finished for comfort, movement, and repeat wear.",
+      },
+      {
+        title: "Everyday Versatility",
+        description: "Designed to move from daytime styling into evening occasions.",
+      },
+    ];
+  }, [product]);
+  const featuredBenefitCards = useMemo(() => productDetailItems.slice(0, 4), [productDetailItems]);
+  const sizeFitNotes = useMemo(() => {
+    const notes: string[] = [];
+
+    if (sizeOptionType) {
+      notes.push("Use the size options above and open Size guide for measurements.");
+    }
+
+    if (selectedVariantLabel) {
+      notes.push(`Current selection: ${selectedVariantLabel}.`);
+    }
+
+    if (isShoeCategory) {
+      notes.push("If you are between sizes, we recommend choosing the larger size.");
+    } else if (isBagCategory) {
+      notes.push("Bag dimensions can vary by style; check product details before checkout.");
+    } else {
+      notes.push("Designed for comfortable movement and an easy day-to-evening fit.");
+    }
+
+    return notes;
+  }, [isBagCategory, isShoeCategory, selectedVariantLabel, sizeOptionType]);
   const missingOptionNames = useMemo(
     () =>
       sortedOptionTypes
@@ -597,12 +672,35 @@ const ProductPage = () => {
   }, [hasVariants, isOutOfStock, product, productStockQuantity, selectedVariant]);
   const stockStatusToneClass =
     stockStatus.tone === "danger"
-      ? "text-[var(--color-muted)]"
+      ? "text-[var(--color-danger)]"
       : stockStatus.tone === "accent"
         ? "text-[var(--color-accent)]"
         : stockStatus.tone === "muted"
           ? "text-[var(--color-muted-soft)]"
           : "text-[var(--color-muted)]";
+  const urgencyMessage = useMemo(() => {
+    if (!product) {
+      return null;
+    }
+
+    if (hasVariants) {
+      if (!selectedVariant || !selectedVariant.is_available || selectedVariant.stock_quantity <= 0) {
+        return null;
+      }
+
+      if (selectedVariant.stock_quantity <= 10) {
+        return `Selling fast • Only ${selectedVariant.stock_quantity} left`;
+      }
+
+      return null;
+    }
+
+    if (!isOutOfStock && productStockQuantity <= 10) {
+      return `Selling fast • Only ${productStockQuantity} left`;
+    }
+
+    return null;
+  }, [hasVariants, isOutOfStock, product, productStockQuantity, selectedVariant]);
 
   useEffect(() => {
     if (!hasVariants) {
@@ -801,6 +899,75 @@ const ProductPage = () => {
       variant_label: null,
     });
   };
+  const renderProductCtas = (mode: "inline" | "sticky") => {
+    const isSticky = mode === "sticky";
+
+    if (showTryOn) {
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() => setTryOnOpen(true)}
+            className={`flex items-center justify-center gap-2 rounded-[var(--border-radius)] border-0 bg-[var(--color-primary)] font-body uppercase transition-all duration-200 ease-in hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] ${
+              isSticky
+                ? "min-w-0 flex-1 px-3 py-[15px] text-[10px] tracking-[0.14em] text-[var(--color-secondary)]"
+                : "w-full px-4 py-[18px] text-[11px] tracking-[0.18em] text-[var(--color-secondary)]"
+            }`}
+          >
+            <WandSparkles size={16} strokeWidth={1.4} />
+            Try it On
+          </button>
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={isAddToCartDisabled}
+            className={`rounded-[var(--border-radius)] font-body uppercase transition-all duration-200 ease-in ${
+              isSticky
+                ? `min-w-0 flex-1 border px-3 py-[15px] text-[10px] tracking-[0.14em] ${
+                    isAddToCartDisabled
+                      ? "cursor-not-allowed border-[var(--color-border)] text-[var(--color-muted)]"
+                      : "cursor-pointer border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]"
+                  }`
+                : `w-full border px-4 py-[18px] text-[11px] tracking-[0.18em] ${
+                    isAddToCartDisabled
+                      ? "cursor-not-allowed border-[var(--color-border)] text-[var(--color-muted)]"
+                      : "cursor-pointer border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]"
+                  }`
+            }`}
+          >
+            {addToCartButtonText}
+          </button>
+          {!isSticky ? <p className="text-center font-body text-[9px] tracking-[0.1em] text-[var(--color-muted-soft)]">Powered by Vestigh</p> : null}
+        </>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        disabled={isAddToCartDisabled}
+        className={`rounded-[var(--border-radius)] border-0 font-body uppercase transition-all duration-200 ease-in ${
+          isSticky
+            ? `w-full px-4 py-[15px] text-[10px] tracking-[0.14em] ${
+                isAddToCartDisabled
+                  ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
+                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+              }`
+            : `w-full px-4 py-[18px] text-[11px] tracking-[0.18em] ${
+                isAddToCartDisabled
+                  ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
+                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+              }`
+        }`}
+      >
+        {addToCartButtonText}
+      </button>
+    );
+  };
+  const stickyMobileCtaPaddingClass = showTryOn
+    ? "pb-[calc(8.5rem+env(safe-area-inset-bottom))]"
+    : "pb-[calc(6.5rem+env(safe-area-inset-bottom))]";
 
   if (loading) {
     return <ProductPageSkeleton />;
@@ -815,8 +982,8 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="mb-10 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+    <div className={`container mx-auto px-4 pt-12 ${stickyMobileCtaPaddingClass} lg:pb-12`}>
+      <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <Link
           to="/shop"
           className="font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-foreground"
@@ -824,7 +991,7 @@ const ProductPage = () => {
           {"\u2190 Back to Shop"}
         </Link>
 
-        <div className="flex flex-wrap items-center gap-2 font-body text-[11px] font-light text-[var(--color-muted)]">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 font-body text-[11px] font-light text-[var(--color-muted)] lg:flex-nowrap lg:justify-end">
           <Link to="/" className="transition-colors hover:text-foreground">
             Home
           </Link>
@@ -837,15 +1004,15 @@ const ProductPage = () => {
             {categoryLabel}
           </Link>
           <span className="text-[var(--color-muted-soft)]">/</span>
-          <span>{product.name}</span>
+          <span className="min-w-0 max-w-full break-words text-[var(--color-muted-soft)] lg:max-w-[440px] lg:truncate">{product.name}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-16">
-        <div>
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,54fr)_minmax(0,46fr)] lg:gap-12 xl:gap-14">
+        <div className="min-w-0">
           {galleryImages.length > 0 ? (
             <div className="flex flex-col gap-3 md:flex-row md:gap-3">
-              <div className="lux-hide-scrollbar order-2 flex gap-2 overflow-x-auto pb-1 md:order-1 md:max-h-[400px] md:w-20 md:flex-col md:overflow-x-hidden md:overflow-y-auto md:pb-0">
+              <div className="lux-hide-scrollbar order-2 flex gap-2 overflow-x-auto pb-1 md:order-1 md:max-h-[440px] md:w-[90px] md:flex-col md:overflow-x-hidden md:overflow-y-auto md:pb-0">
                 {galleryImages.map((image, index) => {
                   const hasThumbError = thumbnailErrors[image] === true;
                   const isActive = activeImage === image;
@@ -858,8 +1025,10 @@ const ProductPage = () => {
                         setHasActiveImageError(false);
                         setLightboxIndex(index);
                       }}
-                      className={`h-[75px] w-[56px] shrink-0 overflow-hidden rounded-[var(--border-radius)] border-2 transition-all duration-200 ease-in md:h-24 md:w-[72px] ${
-                        isActive ? "border-[var(--color-primary)] opacity-100" : "border-transparent opacity-60 hover:opacity-100"
+                      className={`h-[84px] w-[64px] shrink-0 overflow-hidden rounded-[var(--border-radius)] border-2 bg-[rgba(var(--color-primary-rgb),0.03)] transition-all duration-200 ease-in md:h-[108px] md:w-[80px] ${
+                        isActive
+                          ? "border-[var(--color-primary)] opacity-100 shadow-[0_10px_24px_rgba(var(--color-primary-rgb),0.14)]"
+                          : "border-[var(--color-border)] opacity-70 hover:opacity-100"
                       }`}
                       aria-label={`View image ${index + 1}`}
                     >
@@ -887,7 +1056,7 @@ const ProductPage = () => {
                 <button
                   type="button"
                   onClick={handleOpenLightbox}
-                  className="group block w-full cursor-zoom-in overflow-hidden rounded-[var(--border-radius)]"
+                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-[var(--border-radius)]"
                   aria-label="Open full image"
                 >
                   {activeImage && !hasActiveImageError ? (
@@ -895,38 +1064,65 @@ const ProductPage = () => {
                       <img
                         src={activeImage}
                         alt={product.name}
-                        className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.035]"
                         onError={() => setHasActiveImageError(true)}
                       />
                     </div>
                   ) : (
                     <ProductImagePlaceholder className="aspect-[3/4] w-full rounded-[var(--border-radius)]" />
                   )}
+                  <span className="pointer-events-none absolute bottom-4 right-4 rounded-[var(--border-radius)] bg-[rgba(var(--color-primary-rgb),0.72)] px-3 py-1 font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-secondary)]">
+                    View Fullscreen
+                  </span>
                 </button>
               </div>
             </div>
           ) : (
             <ProductImagePlaceholder className="aspect-[3/4] w-full rounded-[var(--border-radius)]" />
           )}
+
+          <div className="mt-6 rounded-[var(--border-radius)] border border-[var(--color-border)] bg-[rgba(var(--color-primary-rgb),0.02)] p-4">
+            <div className="grid grid-cols-3 gap-2">
+              {trustItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
+                    <Icon size={18} strokeWidth={1.4} className="text-[var(--color-accent)]" />
+                    <p className="font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">{item.label}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="min-w-0 flex flex-col">
           <span className="mb-2 font-body text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--color-accent)]">{categoryLabel}</span>
-          <h1 className="mb-4 font-display text-[36px] font-light italic leading-[1.2] text-[var(--color-primary)]">{product.name}</h1>
-          <div className="flex items-end gap-3">
+          <h1 className="mb-3 font-display text-[30px] font-normal italic leading-[1.08] text-[var(--color-primary)] sm:text-[34px] xl:text-[38px]">
+            {product.name}
+          </h1>
+          <div className="flex flex-wrap items-end gap-3">
             {displayComparePrice !== null && displayComparePrice > displayPrice ? (
-              <p className="font-body text-[16px] font-light text-[var(--color-muted-soft)] line-through">{formatPrice(displayComparePrice)}</p>
+              <p className="font-body text-[15px] font-light text-[var(--color-muted-soft)] line-through">{formatPrice(displayComparePrice)}</p>
             ) : null}
-            <p className="font-display text-[28px] font-normal text-[var(--color-primary)]">{formatPrice(displayPrice)}</p>
+            <p className="font-display text-[34px] font-normal leading-none text-[var(--color-primary)] sm:text-[38px]">{formatPrice(displayPrice)}</p>
           </div>
           {showPriceVariesByVariantNote ? (
             <p className="mt-1 font-body text-[10px] text-[var(--color-muted-soft)]">Price varies by variant</p>
           ) : null}
 
-          <div className="my-5 border-t border-[var(--color-border)]" />
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            {urgencyMessage ? (
+              <span className="rounded-full border border-[var(--color-accent)] bg-[rgba(var(--color-accent-rgb),0.08)] px-3 py-1 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-accent)]">
+                {urgencyMessage}
+              </span>
+            ) : null}
+            <p className={`font-body text-[11px] uppercase tracking-[0.12em] ${stockStatusToneClass}`}>{stockStatus.text}</p>
+          </div>
 
           {hasVariants ? (
-            <div className="space-y-5">
+            <div className="space-y-6">
               {sortedOptionTypes.map((optionType) => {
                 const selectedValueId = selectedOptions[optionType.id] ?? null;
                 const selectedValue =
@@ -940,15 +1136,6 @@ const ProductPage = () => {
                       <div className="flex items-center gap-4">
                         {selectedValue ? (
                           <p className="font-body text-[11px] text-[var(--color-primary)]">{selectedValue.value}</p>
-                        ) : null}
-                        {sizeOptionType?.id === optionType.id ? (
-                          <button
-                            type="button"
-                            onClick={() => setSizeGuideOpen(true)}
-                            className="font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] transition-colors duration-200 hover:text-[var(--color-primary)]"
-                          >
-                            Size guide
-                          </button>
                         ) : null}
                       </div>
                     </div>
@@ -1018,81 +1205,95 @@ const ProductPage = () => {
                         })}
                       </div>
                     )}
+
                   </div>
                 );
               })}
+              {sizeOptionType ? (
+                <div className="rounded-[var(--border-radius)] border border-[var(--color-border)] bg-[rgba(var(--color-primary-rgb),0.02)] p-3">
+                  <p className="font-body text-[10px] text-[var(--color-muted-soft)]">Not sure about fit? Check the size guide before selecting.</p>
+                  <button
+                    type="button"
+                    onClick={() => setSizeGuideOpen(true)}
+                    className="mt-2 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
+                  >
+                    Open Size Guide
+                  </button>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
-          <p className={`mt-5 font-body text-[11px] uppercase tracking-[0.1em] ${stockStatusToneClass}`}>{stockStatus.text}</p>
+          <div className="my-8 border-t border-[var(--color-border)]" />
 
-          <div className="my-5 border-t border-[var(--color-border)]" />
-
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={isAddToCartDisabled}
-            className={`w-full rounded-[var(--border-radius)] border-0 px-4 py-[18px] font-body text-[11px] uppercase tracking-[0.18em] transition-all duration-200 ease-in ${
-              isAddToCartDisabled
-                ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
-                : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
-            }`}
-          >
-            {addToCartButtonText}
-          </button>
-
-          {showTryOn ? (
-            <>
-              <button
-                type="button"
-                onClick={() => setTryOnOpen(true)}
-                className="mt-[10px] flex w-full items-center justify-center gap-2 rounded-[var(--border-radius)] border border-[var(--color-primary)] bg-transparent px-4 py-[18px] font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-primary)] transition-all duration-200 ease-in hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]"
-              >
-                <WandSparkles size={16} strokeWidth={1.4} />
-                Try it On
-              </button>
-              <p className="mt-[6px] text-center font-body text-[9px] tracking-[0.1em] text-[var(--color-muted-soft)]">Powered by StyleSyncs</p>
-            </>
-          ) : null}
-
-          <div className="mt-5 flex items-start justify-between gap-3">
-            {trustItems.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <div key={item.label} className="flex flex-1 flex-col items-center gap-1.5 text-center">
-                  <Icon size={18} strokeWidth={1.4} className="text-[var(--color-accent)]" />
-                  <p className="font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">{item.label}</p>
-                </div>
-              );
-            })}
+          <div className="hidden space-y-3 lg:block">
+            {renderProductCtas("inline")}
           </div>
 
-          <div className="my-7 border-t border-[var(--color-border)]" />
+          <div className="mt-8 border-y border-[var(--color-border)]">
+            <Accordion type="single" collapsible defaultValue="description" className="w-full">
+              <AccordionItem value="description" className="border-[var(--color-border)]">
+                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                  Description
+                </AccordionTrigger>
+                <AccordionContent className="pb-5">
+                  <p className="font-body text-[14px] font-light leading-[1.9] text-[var(--color-muted)]">
+                    {productNarrative || "This piece is designed with elevated everyday wear in mind."}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
 
-          <p className="font-body text-[14px] font-light leading-[1.8] text-[var(--color-muted)]">
-            {product.short_description || product.description || ""}
-          </p>
+              <AccordionItem value="details" className="border-[var(--color-border)]">
+                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                  Product Details
+                </AccordionTrigger>
+                <AccordionContent className="pb-5">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {featuredBenefitCards.map((item, index) => {
+                      const Icon = benefitIcons[index % benefitIcons.length];
 
-          <div className="mt-7 grid grid-cols-2 border border-[var(--color-border)]">
-            {benefitTiles.map((benefit, index) => {
-              const Icon = benefitIcons[index % benefitIcons.length];
+                      return (
+                        <div
+                          key={`${item.title}-${index}`}
+                          className="rounded-[var(--border-radius)] border border-[var(--color-border)] bg-[rgba(var(--color-primary-rgb),0.02)] p-4"
+                        >
+                          <div className="mb-2 flex items-center gap-2">
+                            <Icon size={16} className="text-[var(--color-primary)]" />
+                            <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-primary)]">{item.title}</p>
+                          </div>
+                          <p className="font-body text-[12px] leading-[1.7] text-[var(--color-muted)]">{item.description}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-              return (
-                <div
-                  key={`${benefit}-${index}`}
-                  className={`flex min-h-[108px] flex-col items-center justify-center px-3 text-center ${
-                    index % 2 === 0 ? "border-r border-[var(--color-border)]" : ""
-                  } ${index < 2 ? "border-b border-[var(--color-border)]" : ""}`}
-                >
-                  <Icon size={20} className="mb-3 text-[var(--color-primary)]" />
-                  <span className="font-body text-[11px] font-light uppercase tracking-[0.1em] text-[var(--color-muted)]">{benefit}</span>
-                </div>
-              );
-            })}
+              <AccordionItem value="size-fit" className="border-b-0">
+                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                  Size &amp; Fit
+                </AccordionTrigger>
+                <AccordionContent className="pb-5">
+                  <div className="space-y-2">
+                    {sizeFitNotes.map((note, index) => (
+                      <p key={`size-fit-note-${index}`} className="font-body text-[12px] leading-[1.7] text-[var(--color-muted)]">
+                        {note}
+                      </p>
+                    ))}
+                  </div>
+                  {sizeOptionType ? (
+                    <button
+                      type="button"
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="mt-4 font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
+                    >
+                      Open Size Guide
+                    </button>
+                  ) : null}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
-
-          <div className="my-7 border-t border-[var(--color-border)]" />
         </div>
       </div>
 
@@ -1101,8 +1302,8 @@ const ProductPage = () => {
           <div className="my-12 border-t border-[var(--color-border)]" />
 
           <section>
-            <p className="mb-2 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">RELATED PRODUCTS</p>
-            <h2 className="mb-10 font-display text-[32px] font-light italic leading-[1.1] text-[var(--color-primary)]">You May Also Like</h2>
+            <p className="mb-2 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">YOU MAY ALSO LOVE</p>
+            <h2 className="mb-10 font-display text-[32px] font-light italic leading-[1.1] text-[var(--color-primary)]">You May Also Love</h2>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {relatedProducts.map((item) => (
@@ -1112,6 +1313,13 @@ const ProductPage = () => {
           </section>
         </>
       ) : null}
+
+      <div
+        className="fixed bottom-0 left-0 right-0 z-[60] border-t border-[var(--color-border)] bg-[rgba(var(--color-secondary-rgb),0.96)] px-4 pt-3 backdrop-blur-sm lg:hidden"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
+      >
+        <div className={showTryOn ? "flex items-stretch gap-2" : ""}>{renderProductCtas("sticky")}</div>
+      </div>
 
       {isLightboxOpen ? (
         <div

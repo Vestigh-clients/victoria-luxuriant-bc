@@ -10,7 +10,7 @@ import { useSignOutWithCartWarning } from "@/hooks/useSignOutWithCartWarning";
 
 const baseNavLinks = [
   { to: "/", label: "Home" },
-  { to: "/shop", label: "Shop" },
+  { to: "/#shop", label: "Shop" },
 ];
 
 const accountMenuLinks = [
@@ -212,7 +212,7 @@ const Navbar = () => {
   useEffect(() => {
     setOpen(false);
     closeUserMenus();
-  }, [location.pathname, closeUserMenus]);
+  }, [location.hash, location.pathname, closeUserMenus]);
 
   useEffect(() => {
     if (!isDesktopUserMenuOpen && !isMobileUserMenuOpen) {
@@ -265,7 +265,7 @@ const Navbar = () => {
       return baseNavLinks;
     }
 
-    const shopLinkIndex = baseNavLinks.findIndex((link) => link.to === "/shop");
+    const shopLinkIndex = baseNavLinks.findIndex((link) => link.to === "/#shop");
     if (shopLinkIndex < 0) {
       return baseNavLinks;
     }
@@ -283,9 +283,14 @@ const Navbar = () => {
   }, [enabledCategories]);
   const isNavLinkActive = useCallback(
     (to: string) => {
+      if (to.startsWith("/#")) {
+        const targetHash = to.slice(1);
+        return location.pathname === "/" && location.hash === targetHash;
+      }
+
       return location.pathname === to;
     },
-    [location.pathname],
+    [location.hash, location.pathname],
   );
   const metadata = (user?.user_metadata ?? {}) as Record<string, unknown>;
   const metadataFirstName = typeof metadata.first_name === "string" ? metadata.first_name.trim() : "";
@@ -323,8 +328,8 @@ const Navbar = () => {
     ? "text-[rgba(var(--color-secondary-rgb),0.86)] hover:text-[var(--color-secondary)]"
     : `${solidNavMutedTextClass} ${solidNavInteractiveHoverClass}`;
   const profileTriggerClassName = isTransparentRoute
-    ? "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[rgba(var(--color-secondary-rgb),0.12)] font-body text-[12px] text-[var(--color-secondary)] transition-all duration-300 hover:bg-[rgba(var(--color-secondary-rgb),0.22)]"
-    : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[rgba(var(--color-primary-rgb),0.1)] font-body text-[12px] text-[var(--color-primary)] transition-all duration-300 hover:bg-[rgba(var(--color-primary-rgb),0.2)]";
+    ? "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(var(--color-secondary-rgb),0.35)] bg-[var(--color-secondary)] font-body text-[12px] text-[var(--color-primary)] shadow-[0_8px_20px_rgba(var(--color-primary-rgb),0.25)] transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+    : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(var(--color-navbar-solid-foreground-rgb),0.15)] bg-[var(--color-navbar-solid-foreground)] font-body text-[12px] text-[var(--color-navbar-solid)] shadow-[0_8px_20px_rgba(var(--color-primary-rgb),0.12)] transition-all duration-300 hover:bg-[var(--color-navbar-solid-interactive)] hover:text-[var(--color-primary)]";
 
   const adminAction = isAuthenticated && isAdmin ? (
     <Link

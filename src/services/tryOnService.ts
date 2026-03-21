@@ -17,7 +17,7 @@ const assertTryOnConfig = () => {
 
 // v1 for accessories (bags), v2 for everything else.
 export const selectApiVersion = (hasAccessories: boolean): "v1" | "v2" => {
-  return hasAccessories ? "v1" : "v2";
+  return "v2";//hasAccessories ? "v1" : "v2";
 };
 
 // Start a try-on job.

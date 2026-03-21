@@ -10,7 +10,7 @@ import { getPrimaryImage, isInStock, type Product } from "@/types/product";
 
 type SortOption = "featured" | "price-low-high" | "price-high-low" | "newest";
 
-const CATEGORY_SKELETON_COUNT = 4;
+const CATEGORY_SKELETON_COUNT = 6;
 
 interface CategoryProductCardProps {
   product: Product;
@@ -47,12 +47,7 @@ const CategoryProductCard = ({ product, variant }: CategoryProductCardProps) => 
           </div>
 
           <div className="md:col-span-2 flex flex-col justify-center border-[var(--color-border)] px-6 py-8 transition-colors duration-300 ease-in-out md:border-l md:px-8 group-hover:bg-[var(--color-primary)]">
-            <Link to={`/shop/${product.slug}`}>
-              <h3 className="font-display text-[16px] font-normal italic leading-snug text-foreground transition-colors duration-300 ease-in-out group-hover:text-[var(--color-secondary)]">
-                {product.name}
-              </h3>
-            </Link>
-            <p className="mt-2 font-body text-[13px] font-normal text-[var(--color-muted)] transition-colors duration-300 ease-in-out group-hover:text-[var(--color-secondary)]">
+            <p className="font-display text-[30px] font-semibold leading-none text-[var(--color-primary)] transition-colors duration-300 ease-in-out group-hover:text-[var(--color-secondary)]">
               {formatPrice(product.price)}
             </p>
             {isOutOfStock ? (
@@ -94,10 +89,7 @@ const CategoryProductCard = ({ product, variant }: CategoryProductCardProps) => 
       </div>
 
       <div className="mt-[14px] text-left">
-        <Link to={`/shop/${product.slug}`}>
-          <h3 className="font-display text-[16px] font-normal italic leading-snug text-foreground">{product.name}</h3>
-        </Link>
-        <p className="mt-1 font-body text-[13px] font-normal text-[var(--color-muted)]">{formatPrice(product.price)}</p>
+        <p className="mt-1 font-display text-[21px] font-semibold leading-none text-[var(--color-primary)]">{formatPrice(product.price)}</p>
         {isOutOfStock ? (
           <p className="mt-1 font-body text-[10px] uppercase tracking-[0.08em] text-[var(--color-muted-soft)]">Out of Stock</p>
         ) : null}
@@ -211,8 +203,8 @@ const CategoryPage = () => {
 
   const productChunks = useMemo(() => {
     const chunks: Product[][] = [];
-    for (let index = 0; index < sortedProducts.length; index += 4) {
-      chunks.push(sortedProducts.slice(index, index + 4));
+    for (let index = 0; index < sortedProducts.length; index += 6) {
+      chunks.push(sortedProducts.slice(index, index + 6));
     }
     return chunks;
   }, [sortedProducts]);
@@ -221,8 +213,8 @@ const CategoryPage = () => {
     const chunked: number[][] = [];
     const items = Array.from({ length: CATEGORY_SKELETON_COUNT }).map((_, index) => index);
 
-    for (let index = 0; index < items.length; index += 4) {
-      chunked.push(items.slice(index, index + 4));
+    for (let index = 0; index < items.length; index += 6) {
+      chunked.push(items.slice(index, index + 6));
     }
 
     return chunked;
@@ -325,26 +317,42 @@ const CategoryPage = () => {
           <div className="space-y-[80px]">
             {loading
               ? skeletonChunks.map((chunk, chunkIndex) => {
-                  const [firstProduct, secondProduct, thirdProduct, bannerProduct] = chunk;
+                  const [largeProduct, smallOne, smallTwo, smallThree, smallFour, bannerProduct] = chunk;
 
                   return (
                     <div key={`skeleton-chunk-${chunkIndex}`} className="space-y-[80px]">
                       <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-                        {firstProduct !== undefined ? (
+                        {largeProduct !== undefined ? (
                           <div className="h-full">
                             <CardSkeleton variant="large" />
                           </div>
                         ) : null}
 
-                        {secondProduct !== undefined || thirdProduct !== undefined ? (
-                          <div className={`grid gap-6 md:h-full ${secondProduct !== undefined && thirdProduct !== undefined ? "md:grid-rows-2" : ""}`}>
-                            {secondProduct !== undefined ? (
+                        {smallOne !== undefined || smallTwo !== undefined ? (
+                          <div className={`grid gap-6 md:h-full ${smallOne !== undefined && smallTwo !== undefined ? "md:grid-rows-2" : ""}`}>
+                            {smallOne !== undefined ? (
                               <div className="h-full">
                                 <CardSkeleton variant="standard" />
                               </div>
                             ) : null}
 
-                            {thirdProduct !== undefined ? (
+                            {smallTwo !== undefined ? (
+                              <div className="h-full">
+                                <CardSkeleton variant="standard" />
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : null}
+
+                        {smallThree !== undefined || smallFour !== undefined ? (
+                          <div className={`grid gap-6 md:h-full ${smallThree !== undefined && smallFour !== undefined ? "md:grid-rows-2" : ""}`}>
+                            {smallThree !== undefined ? (
+                              <div className="h-full">
+                                <CardSkeleton variant="standard" />
+                              </div>
+                            ) : null}
+
+                            {smallFour !== undefined ? (
                               <div className="h-full">
                                 <CardSkeleton variant="standard" />
                               </div>
@@ -372,28 +380,44 @@ const CategoryPage = () => {
                   );
                 })
               : productChunks.map((chunk, chunkIndex) => {
-                  const [firstProduct, secondProduct, thirdProduct, bannerProduct] = chunk;
+                  const [largeProduct, smallOne, smallTwo, smallThree, smallFour, bannerProduct] = chunk;
 
                   return (
                     <div key={`${category.slug}-chunk-${chunkIndex}`} className="space-y-[80px]">
                       <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-                        {firstProduct ? (
+                        {largeProduct ? (
                           <div className="h-full">
-                            <CategoryProductCard product={firstProduct} variant="large" />
+                            <CategoryProductCard product={largeProduct} variant="large" />
                           </div>
                         ) : null}
 
-                        {secondProduct || thirdProduct ? (
-                          <div className={`grid gap-6 md:h-full ${secondProduct && thirdProduct ? "md:grid-rows-2" : ""}`}>
-                            {secondProduct ? (
+                        {smallOne || smallTwo ? (
+                          <div className={`grid gap-6 md:h-full ${smallOne && smallTwo ? "md:grid-rows-2" : ""}`}>
+                            {smallOne ? (
                               <div className="h-full">
-                                <CategoryProductCard product={secondProduct} variant="standard" />
+                                <CategoryProductCard product={smallOne} variant="standard" />
                               </div>
                             ) : null}
 
-                            {thirdProduct ? (
+                            {smallTwo ? (
                               <div className="h-full">
-                                <CategoryProductCard product={thirdProduct} variant="standard" />
+                                <CategoryProductCard product={smallTwo} variant="standard" />
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : null}
+
+                        {smallThree || smallFour ? (
+                          <div className={`grid gap-6 md:h-full ${smallThree && smallFour ? "md:grid-rows-2" : ""}`}>
+                            {smallThree ? (
+                              <div className="h-full">
+                                <CategoryProductCard product={smallThree} variant="standard" />
+                              </div>
+                            ) : null}
+
+                            {smallFour ? (
+                              <div className="h-full">
+                                <CategoryProductCard product={smallFour} variant="standard" />
                               </div>
                             ) : null}
                           </div>
