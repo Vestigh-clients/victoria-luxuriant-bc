@@ -3,6 +3,8 @@ export type ProductImage = {
   alt_text: string;
   is_primary: boolean;
   display_order: number;
+  catalog_zoom?: number;
+  catalog_position?: string;
 };
 
 export type ProductBenefit = {
@@ -79,6 +81,18 @@ export const getPrimaryImage = (product: Product): string => {
   return primary?.url ?? product.images[0].url;
 };
 
+export const getSecondaryImage = (product: Product): string => {
+  if (!product.images?.length) {
+    return "";
+  }
+
+  const primary = product.images.find((img) => img.is_primary);
+  const fallbackPrimaryUrl = primary?.url ?? product.images[0]?.url ?? "";
+  const secondary = product.images.find((img) => img.url !== fallbackPrimaryUrl);
+
+  return secondary?.url ?? fallbackPrimaryUrl;
+};
+
 export const isOnSale = (product: Product): boolean => {
   return !!product.compare_at_price && product.compare_at_price > product.price;
 };
@@ -97,4 +111,42 @@ export const getStockQuantity = (product: Product): number => {
   }
 
   return product.stock_quantity;
+};
+
+const normalizeColorHex = (value: string): string | null => {
+  const trimmed = value.trim();
+  if (/^#[0-9a-f]{6}$/i.test(trimmed)) {
+    return trimmed.toUpperCase();
+  }
+
+  if (/^#[0-9a-f]{3}$/i.test(trimmed)) {
+    const [, red, green, blue] = trimmed;
+    return `#${red}${red}${green}${green}${blue}${blue}`.toUpperCase();
+  }
+
+  return null;
+};
+
+export const getProductColorHexes = (product: Product): string[] => {
+  const optionTypes = Array.isArray(product.product_option_types) ? product.product_option_types : [];
+  const seen = new Set<string>();
+  const colorHexes: string[] = [];
+
+  for (const optionType of optionTypes) {
+    for (const optionValue of optionType.product_option_values) {
+      if (!optionValue.color_hex) {
+        continue;
+      }
+
+      const normalizedColorHex = normalizeColorHex(optionValue.color_hex);
+      if (!normalizedColorHex || seen.has(normalizedColorHex)) {
+        continue;
+      }
+
+      seen.add(normalizedColorHex);
+      colorHexes.push(normalizedColorHex);
+    }
+  }
+
+  return colorHexes;
 };

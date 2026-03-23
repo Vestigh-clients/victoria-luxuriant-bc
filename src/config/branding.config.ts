@@ -3,18 +3,18 @@ import type { BrandingConfig } from "./store.types";
 export const brandingConfig: BrandingConfig = {
   storeName: "Luxuriant",
   storeTagline: "Satisfaction Our Hallmark",
-  logoUrl: "assets/vicky_logo_white.png",
+  logoUrl: "assets/vicky_logo_blue.png",
   faviconUrl: "/favicon.ico",
 
-  theme: {
-     primaryColor: "#0B0B0B", // deep black (not pure #000 for better UI depth)
-  secondaryColor: "#FFFFFF", // clean white background
-  accentColor: "#7A7A7A", // neutral grey for subtle elements
-  navbarSolidBackgroundColor: "#0B0B0B",
-    fontHeading: "Playfair Display", // matches elegant brand feel
-    fontBody: "Inter",
-    borderRadius: "xl", // rounded cards in service grid
-  },
+theme: {
+  primaryColor: "#F2EAE0",
+  secondaryColor: "#181411",
+  accentColor: "#D3BC95",
+  navbarSolidBackgroundColor: "#1B1714",
+  fontHeading: "Inter",
+  fontBody: "Inter",
+  borderRadius: "lg",
+},
 
   contact: {
     email: "",

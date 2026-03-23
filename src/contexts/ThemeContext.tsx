@@ -1,4 +1,5 @@
-﻿import { createContext, type ReactNode, useContext, useEffect, useMemo } from "react";
+import { createContext, type ReactNode, useContext, useLayoutEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { storeConfig, type StoreConfig } from "@/config/store.config";
 
 interface ThemeContextValue {
@@ -11,6 +12,16 @@ const BORDER_RADIUS_BY_PRESET: Record<StoreConfig["theme"]["borderRadius"], stri
   sm: "0.25rem",
   md: "0.5rem",
   lg: "0.75rem",
+};
+
+const ADMIN_LIGHT_THEME: StoreConfig["theme"] = {
+  primaryColor: "#463A33",
+  secondaryColor: "#FFFFFF",
+  accentColor: "#F7F2E8",
+  navbarSolidBackgroundColor: "#F7F2E8",
+  fontHeading: storeConfig.theme.fontHeading,
+  fontBody: storeConfig.theme.fontBody,
+  borderRadius: storeConfig.theme.borderRadius,
 };
 
 const normalizeHex = (input: string): string => {
@@ -144,38 +155,95 @@ const mixHex = (baseHex: string, overlayHex: string, overlayWeight: number): str
   return `#${[r, g, b].map((entry) => entry.toString(16).padStart(2, "0")).join("")}`;
 };
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const theme = useMemo(() => storeConfig.theme, []);
+const resolveThemePalette = (theme: StoreConfig["theme"]) => {
+  const primary = normalizeHex(theme.primaryColor);
+  const secondary = normalizeHex(theme.secondaryColor);
+  const accent = normalizeHex(theme.accentColor);
+  const navbarSolid = normalizeHex(theme.navbarSolidBackgroundColor);
+  const isDarkSurface = !isHexLight(secondary);
+  const navbarSolidForeground = toContrastSafeColor(primary, navbarSolid, toReadableTextHex(navbarSolid));
+  const navbarSolidInteractive = toContrastSafeColor(accent, navbarSolid, navbarSolidForeground);
+  const danger = "#C0392B";
+  const success = "#2E7D32";
 
-  useEffect(() => {
+  const muted = isDarkSurface ? mixHex(primary, secondary, 0.28) : mixHex(primary, secondary, 0.32);
+  const mutedSoft = isDarkSurface ? mixHex(primary, secondary, 0.4) : mixHex(primary, secondary, 0.48);
+  const border = isDarkSurface ? mixHex(primary, secondary, 0.78) : mixHex(primary, secondary, 0.7);
+  const surface = isDarkSurface ? mixHex(primary, secondary, 0.92) : mixHex(primary, secondary, 0.82);
+  const surfaceAlt = isDarkSurface ? mixHex(primary, secondary, 0.86) : mixHex(primary, secondary, 0.9);
+  const surfaceStrong = isDarkSurface ? mixHex(primary, secondary, 0.74) : mixHex(primary, secondary, 0.6);
+  const accentSoft = isDarkSurface ? accent : mixHex(accent, secondary, 0.18);
+  const accentContrast = isDarkSurface ? secondary : primary;
+
+  return {
+    theme,
+    isDarkSurface,
+    primary,
+    secondary,
+    accent,
+    accentSoft,
+    accentContrast,
+    navbarSolid,
+    navbarSolidForeground,
+    navbarSolidInteractive,
+    muted,
+    mutedSoft,
+    border,
+    surface,
+    surfaceAlt,
+    surfaceStrong,
+    danger,
+    success,
+  };
+};
+
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  const theme = useMemo(() => (isAdminRoute ? ADMIN_LIGHT_THEME : storeConfig.theme), [isAdminRoute]);
+  const palette = useMemo(() => resolveThemePalette(theme), [theme]);
+
+  useLayoutEffect(() => {
     const root = document.documentElement;
-    const primary = normalizeHex(theme.primaryColor);
-    const secondary = normalizeHex(theme.secondaryColor);
-    const accent = normalizeHex(theme.accentColor);
-    const navbarSolid = normalizeHex(theme.navbarSolidBackgroundColor);
-    const navbarSolidForeground = toReadableTextHex(navbarSolid);
-    const navbarSolidInteractive = toContrastSafeColor(accent, navbarSolid, navbarSolidForeground);
-    const danger = "#C0392B";
-    const success = "#2E7D32";
-    const muted = mixHex(primary, secondary, 0.3);
-    const mutedSoft = mixHex(primary, secondary, 0.45);
-    const border = mixHex(primary, secondary, 0.7);
-    const surface = mixHex(primary, secondary, 0.82);
-    const surfaceAlt = mixHex(primary, secondary, 0.9);
-    const surfaceStrong = mixHex(primary, secondary, 0.6);
+    const {
+      primary,
+      secondary,
+      accent,
+      accentSoft,
+      accentContrast,
+      navbarSolid,
+      navbarSolidForeground,
+      navbarSolidInteractive,
+      muted,
+      mutedSoft,
+      border,
+      surface,
+      surfaceAlt,
+      surfaceStrong,
+      danger,
+      success,
+      isDarkSurface,
+    } = palette;
+
     const primaryRgb = hexToRgb(primary);
     const secondaryRgb = hexToRgb(secondary);
     const accentRgb = hexToRgb(accent);
+    const accentContrastRgb = hexToRgb(accentContrast);
     const navbarSolidRgb = hexToRgb(navbarSolid);
     const navbarSolidForegroundRgb = hexToRgb(navbarSolidForeground);
     const navbarSolidInteractiveRgb = hexToRgb(navbarSolidInteractive);
     const dangerRgb = hexToRgb(danger);
     const successRgb = hexToRgb(success);
     const borderRgb = hexToRgb(border);
+    const surfaceRgb = hexToRgb(surface);
+    const surfaceAltRgb = hexToRgb(surfaceAlt);
+    const mutedSoftRgb = hexToRgb(mutedSoft);
 
     root.style.setProperty("--color-primary", primary);
     root.style.setProperty("--color-secondary", secondary);
     root.style.setProperty("--color-accent", accent);
+    root.style.setProperty("--color-accent-soft", accentSoft);
+    root.style.setProperty("--color-accent-contrast", accentContrast);
     root.style.setProperty("--color-navbar-solid", navbarSolid);
     root.style.setProperty("--color-navbar-solid-foreground", navbarSolidForeground);
     root.style.setProperty("--color-navbar-solid-interactive", navbarSolidInteractive);
@@ -199,27 +267,29 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     root.style.setProperty("--color-navbar-solid-interactive-rgb", `${navbarSolidInteractiveRgb.r}, ${navbarSolidInteractiveRgb.g}, ${navbarSolidInteractiveRgb.b}`);
     root.style.setProperty("--color-danger-rgb", `${dangerRgb.r}, ${dangerRgb.g}, ${dangerRgb.b}`);
     root.style.setProperty("--color-success-rgb", `${successRgb.r}, ${successRgb.g}, ${successRgb.b}`);
+    root.style.setProperty("--color-border-rgb", `${borderRgb.r}, ${borderRgb.g}, ${borderRgb.b}`);
 
     root.style.setProperty("--background", rgbToHsl(secondaryRgb));
     root.style.setProperty("--foreground", rgbToHsl(primaryRgb));
-    root.style.setProperty("--card", rgbToHsl(secondaryRgb));
+    root.style.setProperty("--card", rgbToHsl(surfaceRgb));
     root.style.setProperty("--card-foreground", rgbToHsl(primaryRgb));
-    root.style.setProperty("--popover", rgbToHsl(secondaryRgb));
+    root.style.setProperty("--popover", rgbToHsl(surfaceAltRgb));
     root.style.setProperty("--popover-foreground", rgbToHsl(primaryRgb));
     root.style.setProperty("--primary", rgbToHsl(primaryRgb));
     root.style.setProperty("--primary-foreground", toReadableForeground(primary));
-    root.style.setProperty("--secondary", rgbToHsl(secondaryRgb));
+    root.style.setProperty("--secondary", rgbToHsl(surfaceRgb));
     root.style.setProperty("--secondary-foreground", rgbToHsl(primaryRgb));
-    root.style.setProperty("--muted", rgbToHsl(secondaryRgb));
-    root.style.setProperty("--muted-foreground", "0 0% 38%");
+    root.style.setProperty("--muted", rgbToHsl(surfaceAltRgb));
+    root.style.setProperty("--muted-foreground", rgbToHsl(mutedSoftRgb));
     root.style.setProperty("--accent", rgbToHsl(accentRgb));
-    root.style.setProperty("--accent-foreground", toReadableForeground(accent));
+    root.style.setProperty("--accent-foreground", rgbToHsl(accentContrastRgb));
     root.style.setProperty("--border", rgbToHsl(borderRgb));
     root.style.setProperty("--input", rgbToHsl(borderRgb));
     root.style.setProperty("--ring", rgbToHsl(accentRgb));
     root.style.setProperty("--radius", BORDER_RADIUS_BY_PRESET[theme.borderRadius]);
     root.style.setProperty("--font-display", theme.fontHeading);
-  }, [theme]);
+    root.style.setProperty("color-scheme", isDarkSurface ? "dark" : "light");
+  }, [palette, theme.borderRadius, theme.fontBody, theme.fontHeading]);
 
   return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
 };
@@ -231,4 +301,3 @@ export const useThemeConfig = () => {
   }
   return context;
 };
-

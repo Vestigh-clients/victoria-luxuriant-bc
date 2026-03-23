@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
-import { LayoutDashboard, Menu, ShoppingBag, X } from "lucide-react";
+import { LayoutDashboard, Menu, ShoppingBag, User, X } from "lucide-react";
 import SignOutConfirmModal from "@/components/auth/SignOutConfirmModal";
 import StoreLogo from "@/components/StoreLogo";
 import { storeConfig } from "@/config/store.config";
@@ -10,7 +10,8 @@ import { useSignOutWithCartWarning } from "@/hooks/useSignOutWithCartWarning";
 
 const baseNavLinks = [
   { to: "/", label: "Home" },
-  { to: "/#shop", label: "Shop" },
+  { to: "/shop", label: "Shop" },
+  { to: "/about", label: "About Us" },
 ];
 
 const accountMenuLinks = [
@@ -25,7 +26,6 @@ const CATEGORY_ROUTE_PREFIX = "/category/";
 
 interface ProfileMenuProps {
   isOpen: boolean;
-  userInitial: string;
   userName: string;
   userEmail: string;
   menuId: string;
@@ -38,7 +38,6 @@ interface ProfileMenuProps {
 
 const ProfileMenu = ({
   isOpen,
-  userInitial,
   userName,
   userEmail,
   menuId,
@@ -59,7 +58,7 @@ const ProfileMenu = ({
         aria-controls={menuId}
         className={triggerClassName}
       >
-        {userInitial}
+        <User size={18} strokeWidth={1.5} />
       </button>
 
       {isOpen ? (
@@ -124,45 +123,7 @@ const Navbar = () => {
   const { isConfirmOpen, isSubmitting, requestSignOut, confirmSignOut, cancelSignOut } = useSignOutWithCartWarning();
   const previousTotalItemsRef = useRef(totalItems);
   const badgeResetTimeoutRef = useRef<number | null>(null);
-  const enabledCategories = useMemo(
-    () =>
-      storeConfig.categories
-        .filter((category) => category.enabled)
-        .map((category) => ({
-          ...category,
-          slug: category.slug.trim().toLowerCase(),
-        }))
-        .filter((category) => category.slug.length > 0),
-    [],
-  );
-  const isTransparentRoute = useMemo(() => {
-    if (normalizedPathname === "/") {
-      return true;
-    }
-
-    if (!normalizedPathname.startsWith(CATEGORY_ROUTE_PREFIX)) {
-      return false;
-    }
-
-    const categorySlug = normalizedPathname.slice(CATEGORY_ROUTE_PREFIX.length);
-    if (!categorySlug || categorySlug.includes("/")) {
-      return false;
-    }
-
-    let decodedCategorySlug = categorySlug;
-    try {
-      decodedCategorySlug = decodeURIComponent(categorySlug);
-    } catch {
-      decodedCategorySlug = categorySlug;
-    }
-
-    const normalizedCategorySlug = decodedCategorySlug.trim().toLowerCase();
-    if (!normalizedCategorySlug) {
-      return false;
-    }
-
-    return enabledCategories.some((category) => category.slug === normalizedCategorySlug);
-  }, [enabledCategories, normalizedPathname]);
+  const isTransparentRoute = normalizedPathname === "/";
   const overlayHero = isTransparentRoute && !scrolled && !open;
 
   useEffect(() => {
@@ -249,43 +210,30 @@ const Navbar = () => {
   const solidNavMutedTextClass = "text-[rgba(var(--color-navbar-solid-foreground-rgb),0.78)]";
   const solidNavInteractiveTextClass = "text-[var(--color-navbar-solid-interactive)]";
   const solidNavInteractiveHoverClass = "hover:text-[var(--color-navbar-solid-interactive)]";
-  const navTextColor = isTransparentRoute ? "text-[var(--color-secondary)]" : solidNavTextClass;
+  const navTextColor = isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass;
   const navDefaultTextClass = isTransparentRoute
-    ? "text-[rgba(var(--color-secondary-rgb),0.82)]"
+    ? "text-[rgba(var(--color-primary-rgb),0.82)]"
     : solidNavMutedTextClass;
-  const navActiveTextClass = isTransparentRoute ? "text-[var(--color-secondary)] font-medium" : `${solidNavInteractiveTextClass} font-medium`;
+  const navActiveTextClass = isTransparentRoute ? "text-[var(--color-primary)] font-medium" : `${solidNavInteractiveTextClass} font-medium`;
   const navUnderlineClass = isTransparentRoute
-    ? "after:bg-[var(--color-secondary)]"
+    ? "after:bg-[var(--color-primary)]"
     : "after:bg-[var(--color-navbar-solid-interactive)]";
   const iconButtonHoverClass = isTransparentRoute
-    ? "hover:bg-[rgba(var(--color-secondary-rgb),0.1)]"
+    ? "hover:bg-[rgba(var(--color-primary-rgb),0.1)]"
     : "hover:bg-[rgba(var(--color-navbar-solid-foreground-rgb),0.08)]";
-  const navLinks = useMemo(() => {
-    if (enabledCategories.length === 0) {
-      return baseNavLinks;
-    }
-
-    const shopLinkIndex = baseNavLinks.findIndex((link) => link.to === "/#shop");
-    if (shopLinkIndex < 0) {
-      return baseNavLinks;
-    }
-
-    const categoryLinks = enabledCategories.map((category) => ({
-      to: `/category/${encodeURIComponent(category.slug)}`,
-      label: category.name,
-    }));
-
-    return [
-      ...baseNavLinks.slice(0, shopLinkIndex + 1),
-      ...categoryLinks,
-      ...baseNavLinks.slice(shopLinkIndex + 1),
-    ];
-  }, [enabledCategories]);
   const isNavLinkActive = useCallback(
     (to: string) => {
-      if (to.startsWith("/#")) {
-        const targetHash = to.slice(1);
-        return location.pathname === "/" && location.hash === targetHash;
+      if (to === "/") {
+        return location.pathname === "/" && location.hash !== "#shop";
+      }
+
+      if (to === "/shop") {
+        return (
+          location.pathname === "/shop" ||
+          location.pathname.startsWith("/shop/") ||
+          location.pathname.startsWith(CATEGORY_ROUTE_PREFIX) ||
+          (location.pathname === "/" && location.hash === "#shop")
+        );
       }
 
       return location.pathname === to;
@@ -298,7 +246,6 @@ const Navbar = () => {
   const fallbackName = (user?.email ?? "").split("@")[0];
   const userName = [metadataFirstName, metadataLastName].filter(Boolean).join(" ") || fallbackName || "My Account";
   const userEmail = user?.email ?? "";
-  const userInitial = (metadataFirstName || userEmail || "U").slice(0, 1).toUpperCase();
 
   const cartButton = (
     <button
@@ -313,7 +260,7 @@ const Navbar = () => {
       <ShoppingBag size={20} strokeWidth={1.35} />
       {totalItems > 0 ? (
         <span
-          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[9px] font-medium leading-none text-[var(--color-primary)] transition-transform duration-300 ease-out ${badgeScaleClass}`}
+          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[9px] font-medium leading-none text-[var(--color-accent-contrast)] transition-transform duration-300 ease-out ${badgeScaleClass}`}
         >
           {totalItems > 99 ? "99+" : totalItems}
         </span>
@@ -322,14 +269,12 @@ const Navbar = () => {
   );
 
   const signInLinkClass = isTransparentRoute
-    ? "text-[rgba(var(--color-secondary-rgb),0.88)] hover:text-[var(--color-secondary)]"
+    ? "text-[rgba(var(--color-primary-rgb),0.88)] hover:text-[var(--color-primary)]"
     : `${solidNavTextClass} ${solidNavInteractiveHoverClass}`;
   const adminIconClass = isTransparentRoute
-    ? "text-[rgba(var(--color-secondary-rgb),0.86)] hover:text-[var(--color-secondary)]"
+    ? "text-[rgba(var(--color-primary-rgb),0.86)] hover:text-[var(--color-primary)]"
     : `${solidNavMutedTextClass} ${solidNavInteractiveHoverClass}`;
-  const profileTriggerClassName = isTransparentRoute
-    ? "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(var(--color-secondary-rgb),0.35)] bg-[var(--color-secondary)] font-body text-[12px] text-[var(--color-primary)] shadow-[0_8px_20px_rgba(var(--color-primary-rgb),0.25)] transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
-    : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(var(--color-navbar-solid-foreground-rgb),0.15)] bg-[var(--color-navbar-solid-foreground)] font-body text-[12px] text-[var(--color-navbar-solid)] shadow-[0_8px_20px_rgba(var(--color-primary-rgb),0.12)] transition-all duration-300 hover:bg-[var(--color-navbar-solid-interactive)] hover:text-[var(--color-primary)]";
+  const profileTriggerClassName = `inline-flex cursor-pointer items-center justify-center transition-colors duration-300 ${adminIconClass}`;
 
   const adminAction = isAuthenticated && isAdmin ? (
     <Link
@@ -345,7 +290,6 @@ const Navbar = () => {
   const authActionDesktop = isAuthenticated ? (
     <ProfileMenu
       isOpen={isDesktopUserMenuOpen}
-      userInitial={userInitial}
       userName={userName}
       userEmail={userEmail}
       menuId="desktop-account-menu"
@@ -361,16 +305,17 @@ const Navbar = () => {
   ) : (
     <Link
       to="/auth/login"
-      className={`cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
+      aria-label="Open sign in"
+      title="Sign In"
+      className={`inline-flex cursor-pointer items-center justify-center transition-colors duration-300 ${adminIconClass}`}
     >
-      Sign In
+      <User size={19} strokeWidth={1.35} />
     </Link>
   );
 
   const authActionMobile = isAuthenticated ? (
     <ProfileMenu
       isOpen={isMobileUserMenuOpen}
-      userInitial={userInitial}
       userName={userName}
       userEmail={userEmail}
       menuId="mobile-account-menu"
@@ -386,9 +331,11 @@ const Navbar = () => {
   ) : (
     <Link
       to="/auth/login"
-      className={`cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
+      aria-label="Open sign in"
+      title="Sign In"
+      className={`inline-flex cursor-pointer items-center justify-center transition-colors duration-300 ${adminIconClass}`}
     >
-      Sign In
+      <User size={19} strokeWidth={1.35} />
     </Link>
   );
 
@@ -399,41 +346,51 @@ const Navbar = () => {
           isTransparentRoute
             ? overlayHero
               ? "fixed border-transparent bg-transparent"
-              : "fixed border-b border-[rgba(var(--color-secondary-rgb),0.16)] bg-[rgba(var(--color-primary-rgb),0.92)] backdrop-blur-md"
-            : "sticky bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md border-b border-border"
+              : "fixed bg-[rgba(var(--color-navbar-solid-rgb),0.92)] backdrop-blur-md"
+            : "sticky bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md"
         }`}
       >
-        <div className="container mx-auto flex items-center justify-between py-5 px-4">
+        <div className="container mx-auto hidden items-center gap-8 px-4 py-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
           <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex cursor-pointer items-center">
             <StoreLogo
               className="h-10 w-auto sm:h-12 lg:h-14"
-              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-[var(--color-secondary)]" : "text-foreground"}`}
+              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass}`}
             />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-7">
-            <div className="flex items-center gap-10">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`relative cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 after:absolute after:-bottom-[7px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
-                    isNavLinkActive(link.to) ? `${navActiveTextClass} after:scale-x-100` : navDefaultTextClass
-                  } ${navUnderlineClass}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            {adminAction}
-            {cartButton}
-            {authActionDesktop}
+          <div className="flex items-center justify-center gap-10">
+            {baseNavLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`relative cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 after:absolute after:-bottom-[7px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+                  isNavLinkActive(link.to) ? `${navActiveTextClass} after:scale-x-100` : navDefaultTextClass
+                } ${navUnderlineClass}`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center justify-self-end gap-2">
             {adminAction}
+            {authActionDesktop}
             {cartButton}
+          </div>
+        </div>
+
+        <div className="container mx-auto flex items-center justify-between px-4 py-4 lg:hidden">
+          <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex cursor-pointer items-center">
+            <StoreLogo
+              className="h-10 w-auto"
+              textClassName={`text-[20px] ${isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass}`}
+            />
+          </Link>
+
+          <div className="flex items-center gap-3">
+            {adminAction}
             {authActionMobile}
+            {cartButton}
             <button
               type="button"
               className={`relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ${navTextColor} ${iconButtonHoverClass}`}
@@ -464,11 +421,11 @@ const Navbar = () => {
           <div
             className={`lg:hidden px-4 pb-4 animate-fade-in ${
               isTransparentRoute
-                ? "bg-[rgba(var(--color-primary-rgb),0.92)] backdrop-blur-md border-b border-[rgba(var(--color-secondary-rgb),0.16)]"
-                : "bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md border-b border-border"
+                ? "bg-[rgba(var(--color-navbar-solid-rgb),0.92)] backdrop-blur-md"
+                : "bg-[rgba(var(--color-navbar-solid-rgb),0.95)] backdrop-blur-md"
             }`}
           >
-            {navLinks.map((link) => (
+            {baseNavLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}

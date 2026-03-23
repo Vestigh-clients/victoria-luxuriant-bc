@@ -466,7 +466,7 @@ const CheckoutConfirmation = () => {
                 <button
                   type="submit"
                   disabled={!canSubmitPassword || isCreatingAccount}
-                  className="mt-6 w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-6 w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isCreatingAccount ? "Creating..." : "Create Account"}
                 </button>

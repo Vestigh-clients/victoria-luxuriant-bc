@@ -10,7 +10,7 @@ export const catalogConfig: CatalogConfig = {
     {
       name: "Hair Care",
       slug: "hair-care",
-      description: "",
+      description: "some description",
       imageUrl: category_hair_care,
       enabled: true,
     },

@@ -27,6 +27,20 @@ const toString = (value: unknown, fallback = ""): string => {
   return typeof value === "string" ? value : fallback;
 };
 
+const toOptionalNumber = (value: unknown): number | undefined => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+const toOptionalTrimmedString = (value: unknown): string | undefined => {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+};
+
 const toStockQuantity = (value: unknown, fallback = 0): number => {
   return Math.max(0, Math.trunc(toNumber(value, fallback)));
 };
@@ -74,6 +88,22 @@ const mapImage = (value: unknown, index: number): ProductImage | null => {
     alt_text: toString(record.alt_text, ""),
     is_primary: toBoolean(record.is_primary) || toBoolean(record.primary),
     display_order: toNumber(record.display_order, index),
+    catalog_zoom: toOptionalNumber(
+      record.catalog_zoom ??
+        record.catalogZoom ??
+        record.catalog_image_zoom ??
+        record.catalogImageZoom ??
+        record.image_zoom ??
+        record.imageZoom,
+    ),
+    catalog_position: toOptionalTrimmedString(
+      record.catalog_position ??
+        record.catalogPosition ??
+        record.catalog_image_position ??
+        record.catalogImagePosition ??
+        record.image_position ??
+        record.imagePosition,
+    ),
   };
 };
 
@@ -301,7 +331,13 @@ export const getAllProducts = async () => {
       has_variants,
       images, benefits, tags,
       weight_grams,
-      categories ( id, name, slug )
+      categories ( id, name, slug ),
+      product_option_types (
+        id, name, display_order,
+        product_option_values (
+          id, option_type_id, value, color_hex, display_order
+        )
+      )
     `)
     .eq("is_available", true)
     .order("created_at", { ascending: false });
@@ -323,7 +359,13 @@ export const getProductsByCategory = async (categorySlug: string) => {
       is_available, is_featured,
       has_variants,
       images,
-      categories!inner ( id, name, slug )
+      categories!inner ( id, name, slug ),
+      product_option_types (
+        id, name, display_order,
+        product_option_values (
+          id, option_type_id, value, color_hex, display_order
+        )
+      )
     `)
     .eq("is_available", true)
     .eq("categories.slug", categorySlug)

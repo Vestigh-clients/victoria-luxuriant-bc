@@ -11,6 +11,7 @@ import CartDrawer from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index";
+import Shop from "./pages/Shop";
 import ProductPage from "./pages/ProductPage";
 import CategoryPage from "./pages/CategoryPage";
 import About from "./pages/About";
@@ -82,7 +83,7 @@ const AppShell = () => {
       <main className={hideStoreChrome ? "" : "min-h-screen"}>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/shop" element={<Navigate to={{ pathname: "/", hash: "#shop" }} replace />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:slug" element={<ProductPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
           <Route
@@ -175,11 +176,11 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <CartProvider>
-          <ThemeProvider>
-            <BrowserRouter>
+          <BrowserRouter>
+            <ThemeProvider>
               <AppShell />
-            </BrowserRouter>
-          </ThemeProvider>
+            </ThemeProvider>
+          </BrowserRouter>
         </CartProvider>
       </AuthProvider>
     </TooltipProvider>

@@ -424,7 +424,7 @@ const OrderTracking = () => {
             <button
               type="submit"
               disabled={isSubmittingLookup}
-              className="mt-7 w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-6 py-4 font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-secondary)] transition-colors duration-200 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-7 w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-6 py-4 font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-secondary)] transition-colors duration-200 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmittingLookup ? "Finding..." : "Find Order"}
             </button>

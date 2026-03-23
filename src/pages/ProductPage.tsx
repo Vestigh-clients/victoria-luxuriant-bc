@@ -908,7 +908,7 @@ const ProductPage = () => {
           <button
             type="button"
             onClick={() => setTryOnOpen(true)}
-            className={`flex items-center justify-center gap-2 rounded-[var(--border-radius)] border-0 bg-[var(--color-primary)] font-body uppercase transition-all duration-200 ease-in hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] ${
+            className={`flex items-center justify-center gap-2 rounded-[var(--border-radius)] border-0 bg-[var(--color-primary)] font-body uppercase transition-all duration-200 ease-in hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] ${
               isSticky
                 ? "min-w-0 flex-1 px-3 py-[15px] text-[10px] tracking-[0.14em] text-[var(--color-secondary)]"
                 : "w-full px-4 py-[18px] text-[11px] tracking-[0.18em] text-[var(--color-secondary)]"
@@ -952,12 +952,12 @@ const ProductPage = () => {
             ? `w-full px-4 py-[15px] text-[10px] tracking-[0.14em] ${
                 isAddToCartDisabled
                   ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
-                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
               }`
             : `w-full px-4 py-[18px] text-[11px] tracking-[0.18em] ${
                 isAddToCartDisabled
                   ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
-                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
               }`
         }`}
       >

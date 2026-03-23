@@ -189,7 +189,23 @@ export interface ProductImageObject {
   alt_text: string;
   is_primary: boolean;
   display_order: number;
+  catalog_zoom?: number;
+  catalog_position?: string;
 }
+
+const toOptionalNumber = (value: unknown): number | undefined => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+const toOptionalTrimmedString = (value: unknown): string | undefined => {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+};
 
 export interface AdminCategoryWithCount {
   id: string;
@@ -269,6 +285,22 @@ const parseImageObject = (entry: unknown): ProductImageObject | null => {
     alt_text: typeof record.alt_text === "string" ? record.alt_text : "",
     is_primary: record.is_primary === true || record.primary === true,
     display_order: Number.isFinite(Number(record.display_order)) ? Number(record.display_order) : 0,
+    catalog_zoom: toOptionalNumber(
+      record.catalog_zoom ??
+        record.catalogZoom ??
+        record.catalog_image_zoom ??
+        record.catalogImageZoom ??
+        record.image_zoom ??
+        record.imageZoom,
+    ),
+    catalog_position: toOptionalTrimmedString(
+      record.catalog_position ??
+        record.catalogPosition ??
+        record.catalog_image_position ??
+        record.catalogImagePosition ??
+        record.image_position ??
+        record.imagePosition,
+    ),
   };
 };
 

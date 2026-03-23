@@ -6,61 +6,64 @@
 
 @layer base {
   :root {
-    --color-primary: var(--color-primary);
-    --color-secondary: var(--color-secondary);
-    --color-accent: var(--color-accent);
-    --color-navbar-solid: var(--color-secondary);
-    --color-navbar-solid-foreground: #1A1A1A;
-    --color-navbar-solid-interactive: var(--color-accent);
-    --color-muted: var(--color-muted);
-    --color-muted-soft: var(--color-muted-soft);
-    --color-border: var(--color-border);
-    --color-surface: var(--color-surface);
-    --color-surface-alt: var(--color-surface-alt);
-    --color-surface-strong: #E3DDD4;
-    --color-danger: var(--color-danger);
-    --color-success: var(--color-success);
+    --color-primary: #F2EAE0;
+    --color-secondary: #181411;
+    --color-accent: #D3BC95;
+    --color-accent-soft: #D3BC95;
+    --color-accent-contrast: #181411;
+    --color-navbar-solid: #1B1714;
+    --color-navbar-solid-foreground: #F2EAE0;
+    --color-navbar-solid-interactive: #D3BC95;
+    --color-muted: #B5AEA6;
+    --color-muted-soft: #9B948D;
+    --color-border: #48433F;
+    --color-surface: #292522;
+    --color-surface-alt: #37322E;
+    --color-surface-strong: #514C47;
+    --color-danger: #C0392B;
+    --color-success: #2E7D32;
 
-    --color-primary-rgb: 26, 26, 26;
-    --color-secondary-rgb: 245, 240, 232;
-    --color-accent-rgb: 196, 168, 130;
-    --color-navbar-solid-rgb: 245, 240, 232;
-    --color-navbar-solid-foreground-rgb: 26, 26, 26;
-    --color-navbar-solid-interactive-rgb: 196, 168, 130;
+    --color-primary-rgb: 242, 234, 224;
+    --color-secondary-rgb: 24, 20, 17;
+    --color-accent-rgb: 211, 188, 149;
+    --color-navbar-solid-rgb: 27, 23, 20;
+    --color-navbar-solid-foreground-rgb: 242, 234, 224;
+    --color-navbar-solid-interactive-rgb: 211, 188, 149;
     --color-danger-rgb: 192, 57, 43;
     --color-success-rgb: 46, 125, 50;
+    --color-border-rgb: 72, 67, 63;
 
-    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    --font-heading: 'Inter', system-ui, sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
-    --border-radius: 0.5rem;
+    --border-radius: 0.75rem;
 
-    --background: 37 40% 94%;
-    --foreground: 0 0% 10%;
+    --background: 26 17% 8%;
+    --foreground: 33 31% 91%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 26 9% 15%;
+    --card-foreground: 33 31% 91%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 27 9% 20%;
+    --popover-foreground: 33 31% 91%;
 
-    --primary: 0 0% 10%;
-    --primary-foreground: 37 40% 94%;
+    --primary: 33 31% 91%;
+    --primary-foreground: 26 17% 8%;
 
-    --secondary: 36 28% 90%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 26 9% 15%;
+    --secondary-foreground: 33 31% 91%;
 
-    --muted: 36 22% 88%;
-    --muted-foreground: 0 0% 38%;
+    --muted: 27 9% 20%;
+    --muted-foreground: 28 8% 58%;
 
-    --accent: 35 36% 64%;
-    --accent-foreground: 0 0% 10%;
+    --accent: 38 41% 71%;
+    --accent-foreground: 26 17% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 35 20% 82%;
-    --input: 35 20% 82%;
-    --ring: 35 36% 64%;
+    --border: 24 7% 26%;
+    --input: 24 7% 26%;
+    --ring: 38 41% 71%;
 
     --radius: var(--border-radius);
     --font-display: var(--font-heading);
@@ -164,6 +167,19 @@
 }
 
 @layer components {
+  .lux-catalog-scope {
+    --border-color: var(--color-primary-rgb, 242, 234, 224);
+  }
+
+  .lux-catalog-scope *,
+  .lux-catalog-scope *::before,
+  .lux-catalog-scope *::after {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 0;
+    border-color: rgba(var(--border-color), 0.08);
+  }
+
   .lux-cart-toast {
     background: var(--color-primary) !important;
     color: var(--color-secondary) !important;

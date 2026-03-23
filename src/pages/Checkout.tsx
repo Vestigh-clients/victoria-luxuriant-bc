@@ -2375,7 +2375,7 @@ const Checkout = () => {
                             isActive
                               ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-secondary)]"
                               : isCompleted
-                                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-primary)]"
+                                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
                                 : "border-[var(--color-border)] bg-transparent text-[var(--color-muted-soft)]"
                           }`}
                         >
@@ -2453,7 +2453,7 @@ const Checkout = () => {
                       <button
                         type="button"
                         onClick={handleUseSavedDetails}
-                        className="rounded-[var(--border-radius)] bg-[var(--color-primary)] px-5 py-2 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-secondary)] transition-all duration-200 ease-in-out hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)]"
+                        className="rounded-[var(--border-radius)] bg-[var(--color-primary)] px-5 py-2 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-secondary)] transition-all duration-200 ease-in-out hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
                       >
                         Use Saved Details
                       </button>
@@ -2598,7 +2598,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] md:w-auto"
+                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
                     >
                       Next Step
                     </button>
@@ -2800,7 +2800,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] md:w-auto"
+                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
                     >
                       Next Step
                     </button>
@@ -2890,7 +2890,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] md:w-auto"
+                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
                     >
                       Next Step
                     </button>
@@ -3073,7 +3073,7 @@ const Checkout = () => {
                     type="button"
                     onClick={() => void handleConfirmOrder()}
                     disabled={submissionPhase !== "idle"}
-                    className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-5 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-65"
+                    className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-5 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-65"
                   >
                     {submissionPhase === "verifying"
                       ? "Verifying..."

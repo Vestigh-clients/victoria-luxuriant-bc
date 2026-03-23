@@ -577,7 +577,7 @@ const AccountAddresses = () => {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="rounded-[var(--border-radius)] bg-[var(--color-primary)] px-8 py-3 font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-secondary)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-65"
+                className="rounded-[var(--border-radius)] bg-[var(--color-primary)] px-8 py-3 font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-secondary)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:opacity-65"
               >
                 {isSaving ? "Saving..." : "Save Address"}
               </button>

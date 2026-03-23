@@ -163,6 +163,8 @@ const toImageJson = (images: ProductImageObject[]) =>
     alt_text: image.alt_text,
     is_primary: index === 0,
     display_order: index,
+    ...(typeof image.catalog_zoom === "number" ? { catalog_zoom: image.catalog_zoom } : {}),
+    ...(image.catalog_position ? { catalog_position: image.catalog_position } : {}),
   }));
 
 const fileToBase64 = (file: File): Promise<string> =>
