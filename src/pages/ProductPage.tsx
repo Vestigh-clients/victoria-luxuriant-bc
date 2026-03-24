@@ -37,9 +37,9 @@ import {
 const benefitIcons = [Droplets, Sparkles, ShieldCheck, BadgeCheck];
 
 const trustItems = [
-  { icon: ShieldCheck, label: "Secure Ordering" },
-  { icon: Package, label: "Nationwide Delivery" },
-  { icon: RefreshCw, label: "Easy Returns" },
+  { icon: ShieldCheck, label: "Secure encrypted checkout" },
+  { icon: Package, label: "Delivery in 2-5 business days" },
+  { icon: RefreshCw, label: "7-day size exchange" },
 ];
 
 const TRYON_CATEGORY_KEYWORDS = ["mens", "womens", "men", "women", "bag", "shoe"];
@@ -901,6 +901,8 @@ const ProductPage = () => {
   };
   const renderProductCtas = (mode: "inline" | "sticky") => {
     const isSticky = mode === "sticky";
+    const primaryCtaClass = `${isSticky ? "lux-btn-primary lux-btn-compact" : "lux-btn-primary"} w-full`;
+    const secondaryCtaClass = `${isSticky ? "lux-btn-secondary lux-btn-compact" : "lux-btn-secondary"} w-full`;
 
     if (showTryOn) {
       return (
@@ -908,36 +910,20 @@ const ProductPage = () => {
           <button
             type="button"
             onClick={() => setTryOnOpen(true)}
-            className={`flex items-center justify-center gap-2 rounded-[var(--border-radius)] border-0 bg-[var(--color-primary)] font-body uppercase transition-all duration-200 ease-in hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] ${
-              isSticky
-                ? "min-w-0 flex-1 px-3 py-[15px] text-[10px] tracking-[0.14em] text-[var(--color-secondary)]"
-                : "w-full px-4 py-[18px] text-[11px] tracking-[0.18em] text-[var(--color-secondary)]"
-            }`}
+            className={`${primaryCtaClass} ${isSticky ? "min-w-0 flex-1" : ""}`}
           >
             <WandSparkles size={16} strokeWidth={1.4} />
-            Try it On
+            Try it on
           </button>
           <button
             type="button"
             onClick={handleAddToCart}
             disabled={isAddToCartDisabled}
-            className={`rounded-[var(--border-radius)] font-body uppercase transition-all duration-200 ease-in ${
-              isSticky
-                ? `min-w-0 flex-1 border px-3 py-[15px] text-[10px] tracking-[0.14em] ${
-                    isAddToCartDisabled
-                      ? "cursor-not-allowed border-[var(--color-border)] text-[var(--color-muted)]"
-                      : "cursor-pointer border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]"
-                  }`
-                : `w-full border px-4 py-[18px] text-[11px] tracking-[0.18em] ${
-                    isAddToCartDisabled
-                      ? "cursor-not-allowed border-[var(--color-border)] text-[var(--color-muted)]"
-                      : "cursor-pointer border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]"
-                  }`
-            }`}
+            className={`${secondaryCtaClass} ${isSticky ? "min-w-0 flex-1" : ""}`}
           >
             {addToCartButtonText}
           </button>
-          {!isSticky ? <p className="text-center font-body text-[9px] tracking-[0.1em] text-[var(--color-muted-soft)]">Powered by Vestigh</p> : null}
+          {!isSticky ? <p className="text-center font-body text-[11px] text-[var(--color-muted-soft)]">Powered by Vestigh</p> : null}
         </>
       );
     }
@@ -947,19 +933,7 @@ const ProductPage = () => {
         type="button"
         onClick={handleAddToCart}
         disabled={isAddToCartDisabled}
-        className={`rounded-[var(--border-radius)] border-0 font-body uppercase transition-all duration-200 ease-in ${
-          isSticky
-            ? `w-full px-4 py-[15px] text-[10px] tracking-[0.14em] ${
-                isAddToCartDisabled
-                  ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
-                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
-              }`
-            : `w-full px-4 py-[18px] text-[11px] tracking-[0.18em] ${
-                isAddToCartDisabled
-                  ? "cursor-not-allowed bg-[var(--color-border)] text-[var(--color-muted)]"
-                  : "cursor-pointer bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
-              }`
-        }`}
+        className={primaryCtaClass}
       >
         {addToCartButtonText}
       </button>
@@ -986,12 +960,12 @@ const ProductPage = () => {
       <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <Link
           to="/shop"
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-foreground"
+          className="font-body text-[13px] font-medium text-[var(--color-muted)] transition-colors hover:text-foreground"
         >
           {"\u2190 Back to Shop"}
         </Link>
 
-        <div className="flex min-w-0 flex-wrap items-center gap-2 font-body text-[11px] font-light text-[var(--color-muted)] lg:flex-nowrap lg:justify-end">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 font-body text-[12px] text-[var(--color-muted)] lg:flex-nowrap lg:justify-end">
           <Link to="/" className="transition-colors hover:text-foreground">
             Home
           </Link>
@@ -1071,7 +1045,7 @@ const ProductPage = () => {
                   ) : (
                     <ProductImagePlaceholder className="aspect-[3/4] w-full rounded-[var(--border-radius)]" />
                   )}
-                  <span className="pointer-events-none absolute bottom-4 right-4 rounded-[var(--border-radius)] bg-[rgba(var(--color-primary-rgb),0.72)] px-3 py-1 font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-secondary)]">
+                  <span className="pointer-events-none absolute bottom-4 right-4 rounded-[var(--border-radius)] bg-[rgba(var(--color-primary-rgb),0.72)] px-3 py-1 font-body text-[11px] font-medium text-[var(--color-secondary)]">
                     View Fullscreen
                   </span>
                 </button>
@@ -1087,9 +1061,9 @@ const ProductPage = () => {
                 const Icon = item.icon;
 
                 return (
-                  <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
+                  <div key={item.label} className="flex flex-col items-center gap-2 rounded-[var(--border-radius)] bg-[rgba(var(--color-primary-rgb),0.03)] px-2 py-2 text-center">
                     <Icon size={18} strokeWidth={1.4} className="text-[var(--color-accent)]" />
-                    <p className="font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">{item.label}</p>
+                    <p className="font-body text-[12px] leading-[1.35] text-[var(--color-muted)]">{item.label}</p>
                   </div>
                 );
               })}
@@ -1098,7 +1072,7 @@ const ProductPage = () => {
         </div>
 
         <div className="min-w-0 flex flex-col">
-          <span className="mb-2 font-body text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--color-accent)]">{categoryLabel}</span>
+          <span className="lux-kicker lux-kicker-accent mb-2">{categoryLabel}</span>
           <h1 className="mb-3 font-display text-[30px] font-normal italic leading-[1.08] text-[var(--color-primary)] sm:text-[34px] xl:text-[38px]">
             {product.name}
           </h1>
@@ -1109,16 +1083,16 @@ const ProductPage = () => {
             <p className="font-display text-[34px] font-normal leading-none text-[var(--color-primary)] sm:text-[38px]">{formatPrice(displayPrice)}</p>
           </div>
           {showPriceVariesByVariantNote ? (
-            <p className="mt-1 font-body text-[10px] text-[var(--color-muted-soft)]">Price varies by variant</p>
+            <p className="mt-1 font-body text-[12px] text-[var(--color-muted-soft)]">Price varies by variant</p>
           ) : null}
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {urgencyMessage ? (
-              <span className="rounded-full border border-[var(--color-accent)] bg-[rgba(var(--color-accent-rgb),0.08)] px-3 py-1 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-accent)]">
+              <span className="lux-pill lux-pill-accent">
                 {urgencyMessage}
               </span>
             ) : null}
-            <p className={`font-body text-[11px] uppercase tracking-[0.12em] ${stockStatusToneClass}`}>{stockStatus.text}</p>
+            <p className={`font-body text-[12px] font-medium ${stockStatusToneClass}`}>{stockStatus.text}</p>
           </div>
 
           {hasVariants ? (
@@ -1132,10 +1106,10 @@ const ProductPage = () => {
                 return (
                   <div key={optionType.id}>
                     <div className="mb-3 flex items-center justify-between">
-                      <p className="font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">{optionType.name}</p>
+                      <p className="font-body text-[12px] font-medium text-[var(--color-accent)]">{optionType.name}</p>
                       <div className="flex items-center gap-4">
                         {selectedValue ? (
-                          <p className="font-body text-[11px] text-[var(--color-primary)]">{selectedValue.value}</p>
+                          <p className="font-body text-[12px] text-[var(--color-primary)]">{selectedValue.value}</p>
                         ) : null}
                       </div>
                     </div>
@@ -1157,7 +1131,7 @@ const ProductPage = () => {
                                   [optionType.id]: optionValue.id,
                                 }))
                               }
-                              className={`relative h-7 w-7 rounded-full border-2 transition-all duration-150 ease-in ${
+                              className={`relative h-9 w-9 rounded-full border-2 transition-all duration-150 ease-in ${
                                 isSelected ? "scale-110 border-[var(--color-primary)]" : "border-transparent"
                               } ${isUnavailable ? "cursor-not-allowed opacity-35" : "cursor-pointer"}`}
                               style={{ backgroundColor: optionValue.color_hex || storeConfig.theme.primaryColor }}
@@ -1191,7 +1165,7 @@ const ProductPage = () => {
                                   [optionType.id]: optionValue.id,
                                 }))
                               }
-                              className={`min-w-11 rounded-[var(--border-radius)] border px-[14px] py-2 text-center font-body text-[11px] transition-colors duration-150 ease-in ${
+                              className={`min-w-11 rounded-[var(--border-radius)] border px-[14px] py-2.5 text-center font-body text-[12px] transition-colors duration-150 ease-in ${
                                 isSelected
                                   ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-secondary)]"
                                   : isUnavailable
@@ -1211,11 +1185,11 @@ const ProductPage = () => {
               })}
               {sizeOptionType ? (
                 <div className="rounded-[var(--border-radius)] border border-[var(--color-border)] bg-[rgba(var(--color-primary-rgb),0.02)] p-3">
-                  <p className="font-body text-[10px] text-[var(--color-muted-soft)]">Not sure about fit? Check the size guide before selecting.</p>
+                  <p className="font-body text-[12px] text-[var(--color-muted-soft)]">Not sure about fit? Check the size guide before selecting.</p>
                   <button
                     type="button"
                     onClick={() => setSizeGuideOpen(true)}
-                    className="mt-2 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
+                    className="mt-2 font-body text-[12px] font-medium text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
                   >
                     Open Size Guide
                   </button>
@@ -1233,7 +1207,7 @@ const ProductPage = () => {
           <div className="mt-8 border-y border-[var(--color-border)]">
             <Accordion type="single" collapsible defaultValue="description" className="w-full">
               <AccordionItem value="description" className="border-[var(--color-border)]">
-                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                <AccordionTrigger className="py-4 font-body text-[13px] font-medium text-[var(--color-primary)] hover:no-underline">
                   Description
                 </AccordionTrigger>
                 <AccordionContent className="pb-5">
@@ -1244,7 +1218,7 @@ const ProductPage = () => {
               </AccordionItem>
 
               <AccordionItem value="details" className="border-[var(--color-border)]">
-                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                <AccordionTrigger className="py-4 font-body text-[13px] font-medium text-[var(--color-primary)] hover:no-underline">
                   Product Details
                 </AccordionTrigger>
                 <AccordionContent className="pb-5">
@@ -1259,7 +1233,7 @@ const ProductPage = () => {
                         >
                           <div className="mb-2 flex items-center gap-2">
                             <Icon size={16} className="text-[var(--color-primary)]" />
-                            <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-primary)]">{item.title}</p>
+                            <p className="font-body text-[12px] font-medium text-[var(--color-primary)]">{item.title}</p>
                           </div>
                           <p className="font-body text-[12px] leading-[1.7] text-[var(--color-muted)]">{item.description}</p>
                         </div>
@@ -1270,7 +1244,7 @@ const ProductPage = () => {
               </AccordionItem>
 
               <AccordionItem value="size-fit" className="border-b-0">
-                <AccordionTrigger className="py-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-primary)] hover:no-underline">
+                <AccordionTrigger className="py-4 font-body text-[13px] font-medium text-[var(--color-primary)] hover:no-underline">
                   Size &amp; Fit
                 </AccordionTrigger>
                 <AccordionContent className="pb-5">
@@ -1285,7 +1259,7 @@ const ProductPage = () => {
                     <button
                       type="button"
                       onClick={() => setSizeGuideOpen(true)}
-                      className="mt-4 font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
+                      className="mt-4 font-body text-[12px] font-medium text-[var(--color-accent)] transition-colors duration-200 hover:text-[var(--color-primary)]"
                     >
                       Open Size Guide
                     </button>
@@ -1302,7 +1276,7 @@ const ProductPage = () => {
           <div className="my-12 border-t border-[var(--color-border)]" />
 
           <section>
-            <p className="mb-2 font-body text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)]">YOU MAY ALSO LOVE</p>
+            <p className="mb-2 font-body text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--color-accent)]">YOU MAY ALSO LOVE</p>
             <h2 className="mb-10 font-display text-[32px] font-light italic leading-[1.1] text-[var(--color-primary)]">You May Also Love</h2>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -1446,7 +1420,7 @@ const ProductPage = () => {
             ) : isShoeCategory ? (
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-[var(--color-primary)] font-body text-[10px] uppercase tracking-[0.08em] text-[var(--color-secondary)]">
+                  <tr className="bg-[var(--color-primary)] font-body text-[11px] font-medium text-[var(--color-secondary)]">
                     <th className="px-4 py-3 text-left">UK</th>
                     <th className="px-4 py-3 text-left">EU</th>
                     <th className="px-4 py-3 text-left">US</th>
@@ -1467,7 +1441,7 @@ const ProductPage = () => {
             ) : (
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-[var(--color-primary)] font-body text-[10px] uppercase tracking-[0.08em] text-[var(--color-secondary)]">
+                  <tr className="bg-[var(--color-primary)] font-body text-[11px] font-medium text-[var(--color-secondary)]">
                     <th className="px-4 py-3 text-left">Size</th>
                     <th className="px-4 py-3 text-left">Chest (cm)</th>
                     <th className="px-4 py-3 text-left">Waist (cm)</th>

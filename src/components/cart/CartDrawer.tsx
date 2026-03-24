@@ -89,7 +89,7 @@ const CartDrawer = () => {
 
       <aside
         aria-label="Cart drawer"
-        className={`absolute right-0 top-0 h-full w-full max-w-[420px] bg-[var(--color-secondary)] px-8 py-10 transition-transform [transition-duration:350ms] [transition-timing-function:cubic-bezier(0.77,0,0.175,1)] ${
+        className={`absolute right-0 top-0 h-full w-full max-w-[420px] bg-[var(--color-secondary)] px-6 py-8 transition-transform [transition-duration:350ms] [transition-timing-function:cubic-bezier(0.77,0,0.175,1)] ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -97,7 +97,7 @@ const CartDrawer = () => {
           type="button"
           aria-label="Close cart drawer"
           onClick={closeCart}
-          className="absolute right-8 top-8 text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+          className="absolute right-6 top-6 text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
         >
           <X size={18} strokeWidth={1.5} />
         </button>
@@ -106,7 +106,7 @@ const CartDrawer = () => {
           <div className="mb-6 border-b border-[var(--color-border)] pb-4 pr-8">
             <div className="flex items-end justify-between gap-3">
               <h2 className="font-display text-[28px] italic text-[var(--color-primary)]">Your Cart</h2>
-              <p className="font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
+              <p className="font-body text-[13px] font-medium text-[var(--color-muted)]">
                 {totalItems} {totalItems === 1 ? "ITEM" : "ITEMS"}
               </p>
             </div>
@@ -122,7 +122,7 @@ const CartDrawer = () => {
               <Link
                 to="/shop"
                 onClick={closeCart}
-                className="font-body text-[11px] uppercase tracking-[0.15em] text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)]"
+                className="font-body text-[13px] font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)]"
               >
                 Continue Shopping
               </Link>
@@ -142,9 +142,9 @@ const CartDrawer = () => {
                           <p className="font-display text-[15px] italic leading-snug text-[var(--color-primary)]">{item.name}</p>
                         </Link>
 
-                        <p className="mt-1 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-accent)]">{item.category}</p>
+                        <p className="mt-1 font-body text-[11px] font-medium text-[var(--color-accent)]">{item.category}</p>
                         {item.variant_label ? (
-                          <p className="mt-[3px] mb-[6px] font-body text-[10px] tracking-[0.05em] text-[var(--color-muted)]">
+                          <p className="mb-[6px] mt-[3px] font-body text-[12px] text-[var(--color-muted)]">
                             {item.variant_label}
                           </p>
                         ) : null}
@@ -161,23 +161,23 @@ const CartDrawer = () => {
                         </div>
 
                         <div className="mt-3 flex items-center justify-between gap-3">
-                          <div className="inline-flex items-center border border-[var(--color-border)] px-3 py-1 font-body text-[12px] text-[var(--color-primary)]">
+                          <div className="inline-flex items-center rounded-[var(--border-radius)] border border-[var(--color-border)] px-2 py-1 font-body text-[13px] text-[var(--color-primary)]">
                             <button
                               type="button"
                               aria-label={`Decrease quantity for ${item.name}`}
                               onClick={() => updateQuantity(item.product_id, item.quantity - 1, item.variant_id)}
                               disabled={item.quantity <= 1}
-                              className="px-2 transition-colors disabled:text-[var(--color-border)]"
+                              className="min-h-[32px] min-w-[32px] transition-colors disabled:text-[var(--color-border)]"
                             >
                               -
                             </button>
-                            <span className="min-w-[28px] text-center">{item.quantity}</span>
+                            <span className="min-w-[30px] text-center">{item.quantity}</span>
                             <button
                               type="button"
                               aria-label={`Increase quantity for ${item.name}`}
                               onClick={() => updateQuantity(item.product_id, item.quantity + 1, item.variant_id)}
                               disabled={item.quantity >= item.stock_quantity}
-                              className="px-2 transition-colors disabled:text-[var(--color-border)]"
+                              className="min-h-[32px] min-w-[32px] transition-colors disabled:text-[var(--color-border)]"
                             >
                               +
                             </button>
@@ -186,7 +186,7 @@ const CartDrawer = () => {
                           <button
                             type="button"
                             onClick={() => removeFromCart(item.product_id, item.variant_id)}
-                            className="font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] transition-colors hover:text-[var(--color-danger)]"
+                            className="font-body text-[12px] text-[var(--color-muted-soft)] transition-colors hover:text-[var(--color-danger)]"
                           >
                             Remove
                           </button>
@@ -199,7 +199,7 @@ const CartDrawer = () => {
 
               <div className="mt-4 border-t border-[var(--color-border)] pt-4">
                 {savings > 0 ? (
-                  <p className="mb-2 text-right font-body text-[11px] text-[var(--color-accent)]">You save {formatPrice(savings)}</p>
+                  <p className="mb-2 text-right font-body text-[12px] font-medium text-[var(--color-accent)]">You save {formatPrice(savings)}</p>
                 ) : null}
 
                 <div className="mb-1 flex items-center justify-between font-body text-[13px] font-medium text-[var(--color-muted)]">
@@ -207,7 +207,7 @@ const CartDrawer = () => {
                   <span>{formatPrice(subtotal)}</span>
                 </div>
 
-                <div className="mb-6 flex items-center justify-between font-body text-[11px] text-[var(--color-muted-soft)]">
+                <div className="mb-6 flex items-center justify-between font-body text-[12px] text-[var(--color-muted-soft)]">
                   <span>Shipping</span>
                   <span>Calculated at checkout</span>
                 </div>
@@ -216,12 +216,12 @@ const CartDrawer = () => {
                   type="button"
                   onClick={handleProceedToCheckout}
                   disabled={isVerifying || items.length === 0}
-                  className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-[18px] font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="lux-btn-primary w-full"
                 >
                   {isVerifying ? "Verifying..." : "Proceed to Checkout"}
                 </button>
 
-                <p className="mt-3 text-center font-body text-[11px] text-[var(--color-muted-soft)]">
+                <p className="mt-3 text-center font-body text-[12px] text-[var(--color-muted-soft)]">
                   Free delivery on orders over {formatPrice(FREE_DELIVERY_THRESHOLD)}
                 </p>
               </div>

@@ -210,16 +210,16 @@ const Navbar = () => {
   const solidNavMutedTextClass = "text-[rgba(var(--color-navbar-solid-foreground-rgb),0.78)]";
   const solidNavInteractiveTextClass = "text-[var(--color-navbar-solid-interactive)]";
   const solidNavInteractiveHoverClass = "hover:text-[var(--color-navbar-solid-interactive)]";
-  const navTextColor = isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass;
+  const navTextColor = isTransparentRoute ? "text-[var(--color-secondary)]" : solidNavTextClass;
   const navDefaultTextClass = isTransparentRoute
-    ? "text-[rgba(var(--color-primary-rgb),0.82)]"
+    ? "text-[rgba(var(--color-secondary-rgb),0.84)]"
     : solidNavMutedTextClass;
-  const navActiveTextClass = isTransparentRoute ? "text-[var(--color-primary)] font-medium" : `${solidNavInteractiveTextClass} font-medium`;
+  const navActiveTextClass = isTransparentRoute ? "text-[var(--color-secondary)] font-medium" : `${solidNavInteractiveTextClass} font-medium`;
   const navUnderlineClass = isTransparentRoute
-    ? "after:bg-[var(--color-primary)]"
+    ? "after:bg-[var(--color-secondary)]"
     : "after:bg-[var(--color-navbar-solid-interactive)]";
   const iconButtonHoverClass = isTransparentRoute
-    ? "hover:bg-[rgba(var(--color-primary-rgb),0.1)]"
+    ? "hover:bg-[rgba(var(--color-secondary-rgb),0.12)]"
     : "hover:bg-[rgba(var(--color-navbar-solid-foreground-rgb),0.08)]";
   const isNavLinkActive = useCallback(
     (to: string) => {
@@ -260,7 +260,7 @@ const Navbar = () => {
       <ShoppingBag size={20} strokeWidth={1.35} />
       {totalItems > 0 ? (
         <span
-          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[9px] font-medium leading-none text-[var(--color-accent-contrast)] transition-transform duration-300 ease-out ${badgeScaleClass}`}
+          className={`absolute -right-[9px] -top-[8px] inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-accent)] px-[4px] font-body text-[10px] font-medium leading-none text-[var(--color-accent-contrast)] transition-transform duration-300 ease-out ${badgeScaleClass}`}
         >
           {totalItems > 99 ? "99+" : totalItems}
         </span>
@@ -269,10 +269,10 @@ const Navbar = () => {
   );
 
   const signInLinkClass = isTransparentRoute
-    ? "text-[rgba(var(--color-primary-rgb),0.88)] hover:text-[var(--color-primary)]"
+    ? "text-[rgba(var(--color-secondary-rgb),0.9)] hover:text-[var(--color-secondary)]"
     : `${solidNavTextClass} ${solidNavInteractiveHoverClass}`;
   const adminIconClass = isTransparentRoute
-    ? "text-[rgba(var(--color-primary-rgb),0.86)] hover:text-[var(--color-primary)]"
+    ? "text-[rgba(var(--color-secondary-rgb),0.88)] hover:text-[var(--color-secondary)]"
     : `${solidNavMutedTextClass} ${solidNavInteractiveHoverClass}`;
   const profileTriggerClassName = `inline-flex cursor-pointer items-center justify-center transition-colors duration-300 ${adminIconClass}`;
 
@@ -354,7 +354,7 @@ const Navbar = () => {
           <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex cursor-pointer items-center">
             <StoreLogo
               className="h-10 w-auto sm:h-12 lg:h-14"
-              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass}`}
+              textClassName={`text-[20px] sm:text-[24px] ${isTransparentRoute ? "text-[var(--color-secondary)]" : solidNavTextClass}`}
             />
           </Link>
 
@@ -363,7 +363,7 @@ const Navbar = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`relative cursor-pointer font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 after:absolute after:-bottom-[7px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+                className={`relative cursor-pointer font-body text-[12px] font-medium tracking-[0.04em] transition-colors duration-300 after:absolute after:-bottom-[7px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
                   isNavLinkActive(link.to) ? `${navActiveTextClass} after:scale-x-100` : navDefaultTextClass
                 } ${navUnderlineClass}`}
               >
@@ -383,7 +383,7 @@ const Navbar = () => {
           <Link to="/" aria-label={`${storeConfig.storeName} home`} className="inline-flex cursor-pointer items-center">
             <StoreLogo
               className="h-10 w-auto"
-              textClassName={`text-[20px] ${isTransparentRoute ? "text-[var(--color-primary)]" : solidNavTextClass}`}
+              textClassName={`text-[20px] ${isTransparentRoute ? "text-[var(--color-secondary)]" : solidNavTextClass}`}
             />
           </Link>
 
@@ -430,7 +430,7 @@ const Navbar = () => {
                 key={link.to}
                 to={link.to}
                 onClick={() => setOpen(false)}
-                className={`block cursor-pointer py-2.5 font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${
+                className={`block cursor-pointer py-2.5 font-body text-[13px] font-medium transition-colors duration-300 ${
                   isNavLinkActive(link.to) ? navActiveTextClass : navDefaultTextClass
                 }`}
               >
@@ -446,7 +446,7 @@ const Navbar = () => {
                   closeUserMenus();
                   requestSignOut();
                 }}
-                className={`mt-2 block w-full cursor-pointer py-2.5 text-left font-body text-[11px] uppercase tracking-[0.1em] transition-colors duration-300 ${signInLinkClass}`}
+                className={`mt-2 block w-full cursor-pointer py-2.5 text-left font-body text-[13px] font-medium transition-colors duration-300 ${signInLinkClass}`}
               >
                 Sign Out
               </button>

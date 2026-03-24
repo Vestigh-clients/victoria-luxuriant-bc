@@ -1,7 +1,17 @@
-export type BorderRadiusPreset = "sm" | "md" | "lg"| "xl";
+export type BorderRadiusPreset = "sm" | "md" | "lg" | "xl";
 export type CurrencyPosition = "before" | "after";
 export type PaymentMode = "subaccount" | "own_account";
 export type PaystackChargeBearer = "account" | "subaccount";
+
+export type ThemeConfig = {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  navbarSolidBackgroundColor: string;
+  fontHeading: string;
+  fontBody: string;
+  borderRadius: BorderRadiusPreset;
+};
 
 export type CategoryConfig = {
   name: string;
@@ -45,15 +55,8 @@ export interface StoreConfig {
   storeTagline: string;
   logoUrl: string;
   faviconUrl: string;
-  theme: {
-    primaryColor: string;
-    secondaryColor: string;
-    accentColor: string;
-    navbarSolidBackgroundColor: string;
-    fontHeading: string;
-    fontBody: string;
-    borderRadius: BorderRadiusPreset;
-  };
+  theme: ThemeConfig;
+  adminTheme: ThemeConfig;
   contact: {
     email: string;
     phone: string;
@@ -98,7 +101,7 @@ export interface StoreConfig {
 
 export type BrandingConfig = Pick<
   StoreConfig,
-  "storeName" | "storeTagline" | "logoUrl" | "faviconUrl" | "theme" | "contact" | "socials" | "currency" | "pages"
+  "storeName" | "storeTagline" | "logoUrl" | "faviconUrl" | "theme" | "adminTheme" | "contact" | "socials" | "currency" | "pages"
 >;
 
 export type CatalogConfig = Pick<StoreConfig, "categories" | "categoryPage">;

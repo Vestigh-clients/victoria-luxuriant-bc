@@ -18,6 +18,7 @@ export type {
   PaymentMode,
   PaystackChargeBearer,
   StoreConfig,
+  ThemeConfig,
 } from "./store.types";
 
 export const storeConfig: StoreConfig = {
@@ -26,6 +27,7 @@ export const storeConfig: StoreConfig = {
   logoUrl: brandingConfig.logoUrl,
   faviconUrl: brandingConfig.faviconUrl,
   theme: brandingConfig.theme,
+  adminTheme: brandingConfig.adminTheme,
   contact: brandingConfig.contact,
   socials: brandingConfig.socials,
   currency: brandingConfig.currency,

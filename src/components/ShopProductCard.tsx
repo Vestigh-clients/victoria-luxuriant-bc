@@ -47,16 +47,16 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
       {visibleColorHexes.map((colorHex) => (
         <span
           key={`${product.id}-${colorHex}`}
-          className="inline-flex h-4 w-4 rounded-full border border-[rgba(var(--color-primary-rgb),0.16)]"
+          className="inline-flex h-[15px] w-[15px] rounded-full border border-[rgba(var(--color-primary-rgb),0.2)]"
           style={{ backgroundColor: colorHex }}
         />
       ))}
       {remainingColorCount > 0 ? (
-        <span className="font-body text-[10px] uppercase tracking-[0.06em] text-[var(--color-muted-soft)]">+{remainingColorCount}</span>
+        <span className="font-body text-[11px] font-medium text-[var(--color-muted-soft)]">+{remainingColorCount}</span>
       ) : null}
     </div>
   ) : (
-    <span className="block h-4" />
+    <span className="block h-[15px]" />
   );
 
   const baseScale = useMemo(() => {
@@ -119,13 +119,12 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
     openCart();
   };
 
-  const catalogCtaClass =
-    "pointer-events-auto flex min-h-[52px] w-full max-w-[320px] items-center justify-center rounded-full border border-[rgba(var(--color-primary-rgb),0.08)] bg-[var(--color-accent)] px-6 text-center font-body text-[12px] uppercase tracking-[0.08em] text-[var(--color-accent-contrast)] shadow-[0_12px_28px_rgba(var(--color-primary-rgb),0.08)] transition-all duration-300 md:min-h-[56px] md:text-[13px]";
+  const catalogCtaClass = "lux-btn-primary lux-btn-compact pointer-events-auto w-full max-w-[280px]";
 
   if (isCatalogSurface) {
     return (
-      <article className="h-full bg-[var(--color-secondary)]">
-        <div className="group relative flex h-full min-h-[340px] flex-col text-current md:min-h-[460px]">
+      <article className="h-full bg-[var(--color-secondary)] p-1">
+        <div className="group lux-surface-card relative flex h-full min-h-[340px] flex-col overflow-hidden text-current md:min-h-[460px]">
           <Link
             to={productUrl}
             aria-label={`View ${product.name}`}
@@ -152,7 +151,7 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
 
             {hoverScrim}
 
-            <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 flex translate-y-3 justify-center opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+            <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 flex translate-y-0 justify-center opacity-100 transition-all duration-300 ease-out md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100">
               {hasVariants ? (
                 <Link to={productUrl} className={catalogCtaClass}>
                   CHOOSE OPTIONS
@@ -162,7 +161,7 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
                   type="button"
                   onClick={handleCatalogAddToCart}
                   disabled={isOutOfStock}
-                  className={`${catalogCtaClass} ${isOutOfStock ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:brightness-[0.98]"}`}
+                  className={`${catalogCtaClass} ${isOutOfStock ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
                 >
                   ADD TO CART
                 </button>
@@ -171,12 +170,12 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
           </div>
 
           <div className="px-4 pb-5 pt-4 text-center">
-            <p className="font-body text-[10px] uppercase tracking-[0.08em] leading-[1.45] text-[var(--color-primary)] md:text-[11px]">
+            <p className="font-body text-[13px] font-medium leading-[1.45] text-[var(--color-primary)] md:text-[14px]">
               {product.name}
             </p>
-            <p className="mt-1 font-body text-[12px] text-[var(--color-muted-soft)] md:text-[13px]">{formatPrice(product.price)}</p>
+            <p className="mt-1 font-body text-[13px] text-[var(--color-muted)] md:text-[14px]">{formatPrice(product.price)}</p>
             {isOutOfStock ? (
-              <p className="mt-2 font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">Out of Stock</p>
+              <p className="mt-2 font-body text-[11px] font-medium text-[var(--color-muted-soft)]">Out of stock</p>
             ) : null}
           </div>
         </div>
@@ -186,8 +185,8 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
 
   if (variant === "lifestyle") {
     return (
-      <article className="h-full bg-[var(--color-secondary)]">
-        <Link to={productUrl} className="group flex h-full min-h-[340px] flex-col text-current md:min-h-[460px]">
+      <article className="h-full bg-[var(--color-secondary)] p-1">
+        <Link to={productUrl} className="group lux-surface-card flex h-full min-h-[340px] flex-col overflow-hidden text-current md:min-h-[460px]">
           <div className="relative flex min-h-[280px] flex-1 items-stretch justify-center overflow-hidden bg-[rgba(var(--color-primary-rgb),0.03)]">
             <div className="absolute right-4 top-4 z-10">{swatches}</div>
 
@@ -207,19 +206,19 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
             )}
 
             <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10">
-              <span className="flex min-h-[56px] items-center justify-center rounded-full bg-[var(--color-accent-soft)] px-6 text-center font-body text-[12px] uppercase tracking-[0.08em] text-[var(--color-accent-contrast)] md:text-[13px]">
+              <span className="lux-btn-ghost lux-btn-compact flex w-full justify-center text-center">
                 CHOOSE OPTIONS
               </span>
             </div>
           </div>
 
           <div className="px-4 pb-5 pt-5 text-center">
-            <p className="font-body text-[10px] uppercase tracking-[0.08em] leading-[1.45] text-[var(--color-primary)] md:text-[11px]">
+            <p className="font-body text-[13px] font-medium leading-[1.45] text-[var(--color-primary)] md:text-[14px]">
               {product.name}
             </p>
-            <p className="mt-1 font-body text-[12px] text-[var(--color-muted-soft)] md:text-[13px]">{formatPrice(product.price)}</p>
+            <p className="mt-1 font-body text-[13px] text-[var(--color-muted)] md:text-[14px]">{formatPrice(product.price)}</p>
             {isOutOfStock ? (
-              <p className="mt-2 font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">Out of Stock</p>
+              <p className="mt-2 font-body text-[11px] font-medium text-[var(--color-muted-soft)]">Out of stock</p>
             ) : null}
           </div>
         </Link>
@@ -228,19 +227,19 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
   }
 
   return (
-    <article className="h-full bg-[var(--color-secondary)]">
-      <Link to={productUrl} className="group flex h-full min-h-[340px] flex-col text-current md:min-h-[460px]">
+    <article className="h-full bg-[var(--color-secondary)] p-1">
+      <Link to={productUrl} className="group lux-surface-card flex h-full min-h-[340px] flex-col overflow-hidden text-current md:min-h-[460px]">
         <div className="flex min-h-[30px] items-start justify-end px-4 pt-4">
           {swatches}
         </div>
 
         <div className="relative flex flex-1 items-center justify-center overflow-hidden px-5 pb-5 pt-2 md:px-8 md:pb-7">
-          <div className="flex aspect-[3/4] w-full max-w-[220px] items-center justify-center bg-[rgba(var(--color-primary-rgb),0.03)] p-4 md:max-w-[280px] md:p-5">
+          <div className="flex aspect-[3/4] w-full max-w-[240px] items-center justify-center bg-[rgba(var(--color-primary-rgb),0.03)] p-3 md:max-w-[300px] md:p-4">
             {imageUrl && !hasImageError ? (
               <img
                 src={imageUrl}
                 alt={imageAlt}
-                className="h-full w-full object-contain transition-transform duration-500 ease-out"
+                className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                 loading="lazy"
                 onError={() => setHasImageError(true)}
               />
@@ -251,12 +250,12 @@ const ShopProductCard = ({ product, variant = "standard", surface = "default" }:
         </div>
 
         <div className="px-4 pb-5 text-center">
-          <p className="font-body text-[10px] uppercase tracking-[0.08em] leading-[1.45] text-[var(--color-primary)] md:text-[11px]">
+          <p className="font-body text-[13px] font-medium leading-[1.45] text-[var(--color-primary)] md:text-[14px]">
             {product.name}
           </p>
-          <p className="mt-1 font-body text-[12px] text-[var(--color-muted-soft)] md:text-[13px]">{formatPrice(product.price)}</p>
+          <p className="mt-1 font-body text-[13px] text-[var(--color-muted)] md:text-[14px]">{formatPrice(product.price)}</p>
           {isOutOfStock ? (
-            <p className="mt-2 font-body text-[9px] uppercase tracking-[0.12em] text-[var(--color-muted-soft)]">Out of Stock</p>
+            <p className="mt-2 font-body text-[11px] font-medium text-[var(--color-muted-soft)]">Out of stock</p>
           ) : null}
         </div>
       </Link>

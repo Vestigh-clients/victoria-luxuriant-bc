@@ -507,11 +507,11 @@ const AdminLayout = () => {
       </aside>
 
       <div className="min-h-screen pt-14 md:pt-0 lg:ml-[240px]">
-        <header className="sticky top-0 z-20 hidden h-16 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-secondary)] px-6 md:flex lg:px-[60px]">
-          <div className="flex flex-wrap items-center gap-2 font-body text-[11px] text-[var(--color-muted)]">
+        <header className="sticky top-0 z-20 hidden h-16 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-primary)] px-6 md:flex lg:px-[60px]">
+          <div className="flex flex-wrap items-center gap-2 font-body text-[11px] text-[var(--color-muted-soft)]">
             {breadcrumb.map((item, index) => (
               <span key={`${item}-${index}`} className="flex items-center gap-2">
-                {index > 0 ? <span className="text-[var(--color-border)]">/</span> : null}
+                {index > 0 ? <span className="text-[var(--color-muted)]">/</span> : null}
                 <span>{item}</span>
               </span>
             ))}
@@ -522,7 +522,7 @@ const AdminLayout = () => {
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((open) => !open)}
-                className="relative p-1 text-[var(--color-primary)] transition-colors hover:text-[var(--color-accent)]"
+                className="relative p-1 text-[var(--color-secondary)] transition-colors hover:text-[var(--color-accent)]"
                 aria-label="Notifications"
               >
                 <Bell size={22} strokeWidth={1.5} />
@@ -570,13 +570,13 @@ const AdminLayout = () => {
               ) : null}
             </div>
 
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] font-body text-[12px] text-[var(--color-secondary)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] font-body text-[12px] text-[var(--color-primary)]">
               {avatarInitial}
             </div>
           </div>
         </header>
 
-        <div className="hidden border-b border-[var(--color-border)] md:block lg:hidden">
+        <div className="hidden border-b border-[var(--color-border)] bg-[var(--color-primary)] md:block lg:hidden">
           <div className="admin-filter-scroll flex items-center gap-3 overflow-x-auto px-6 py-3">
             {compactNavLinks.map((link) => (
               <NavLink
@@ -585,7 +585,9 @@ const AdminLayout = () => {
                 end={link.to === "/admin"}
                 className={({ isActive }) =>
                   `whitespace-nowrap border-b pb-1 font-body text-[10px] uppercase tracking-[0.1em] ${
-                    isActive ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-transparent text-[var(--color-muted)]"
+                    isActive
+                      ? "border-[var(--color-secondary)] text-[var(--color-secondary)]"
+                      : "border-transparent text-[var(--color-muted-soft)] hover:text-[var(--color-secondary)]"
                   }`
                 }
               >
@@ -595,7 +597,7 @@ const AdminLayout = () => {
             <button
               type="button"
               onClick={onSignOut}
-              className="whitespace-nowrap border-b border-transparent pb-1 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted)] hover:text-[var(--color-danger)]"
+              className="whitespace-nowrap border-b border-transparent pb-1 font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] hover:text-[var(--color-danger)]"
             >
               Sign Out
             </button>
@@ -605,7 +607,7 @@ const AdminLayout = () => {
             href="/"
             target="_blank"
             rel="noreferrer"
-            className="mb-3 ml-6 inline-block font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-muted-soft)]"
+            className="mb-3 ml-6 inline-block font-body text-[10px] uppercase tracking-[0.1em] text-[var(--color-muted-soft)] transition-colors hover:text-[var(--color-secondary)]"
           >
             View Store &rarr;
           </a>

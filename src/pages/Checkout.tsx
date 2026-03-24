@@ -697,7 +697,7 @@ const FloatingInput = ({
           htmlFor={id}
           className={`pointer-events-none absolute left-0 font-body transition-all duration-200 ${
             shouldFloatLabel
-              ? "top-[2px] text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]"
+              ? "top-[4px] text-[11px] font-medium tracking-[0.04em] text-[var(--color-accent)]"
               : "top-[20px] text-[14px] text-[var(--color-muted)]"
           }`}
         >
@@ -706,8 +706,8 @@ const FloatingInput = ({
         </label>
       </div>
 
-      {helperText ? <p className="mt-[6px] font-body text-[11px] text-[var(--color-muted-soft)]">{helperText}</p> : null}
-      {error ? <p className="mt-[6px] font-body text-[11px] text-[var(--color-danger)]">{error}</p> : null}
+      {helperText ? <p className="mt-[6px] font-body text-[12px] text-[var(--color-muted-soft)]">{helperText}</p> : null}
+      {error ? <p className="mt-[6px] font-body text-[12px] text-[var(--color-danger)]">{error}</p> : null}
     </div>
   );
 };
@@ -753,7 +753,7 @@ const FloatingTextarea = ({
           htmlFor={id}
           className={`pointer-events-none absolute left-0 font-body transition-all duration-200 ${
             shouldFloatLabel
-              ? "top-[2px] text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]"
+              ? "top-[4px] text-[11px] font-medium tracking-[0.04em] text-[var(--color-accent)]"
               : "top-[22px] text-[14px] text-[var(--color-muted)]"
           }`}
         >
@@ -763,12 +763,12 @@ const FloatingTextarea = ({
       </div>
 
       {showCharacterCount && typeof maxLength === "number" ? (
-        <p className="mt-[6px] text-right font-body text-[10px] text-[var(--color-muted-soft)]">
+        <p className="mt-[6px] text-right font-body text-[11px] text-[var(--color-muted-soft)]">
           {value.length}/{maxLength}
         </p>
       ) : null}
 
-      {error ? <p className="mt-[6px] font-body text-[11px] text-[var(--color-danger)]">{error}</p> : null}
+      {error ? <p className="mt-[6px] font-body text-[12px] text-[var(--color-danger)]">{error}</p> : null}
     </div>
   );
 };
@@ -821,7 +821,7 @@ const FloatingSelect = ({
           htmlFor={id}
           className={`pointer-events-none absolute left-0 font-body transition-all duration-200 ${
             shouldFloatLabel
-              ? "top-[2px] text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]"
+              ? "top-[4px] text-[11px] font-medium tracking-[0.04em] text-[var(--color-accent)]"
               : "top-[20px] text-[14px] text-[var(--color-muted)]"
           }`}
         >
@@ -830,7 +830,7 @@ const FloatingSelect = ({
         </label>
       </div>
 
-      {error ? <p className="mt-[6px] font-body text-[11px] text-[var(--color-danger)]">{error}</p> : null}
+      {error ? <p className="mt-[6px] font-body text-[12px] text-[var(--color-danger)]">{error}</p> : null}
     </div>
   );
 };
@@ -914,7 +914,7 @@ const SearchableStateField = ({
         <p
           className={`pointer-events-none absolute left-0 font-body transition-all duration-200 ${
             shouldFloatLabel
-              ? "top-[2px] text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]"
+              ? "top-[4px] text-[11px] font-medium tracking-[0.04em] text-[var(--color-accent)]"
               : "top-[20px] text-[14px] text-[var(--color-muted)]"
           }`}
         >
@@ -923,7 +923,7 @@ const SearchableStateField = ({
         </p>
       </div>
 
-      {error ? <p className="mt-[6px] font-body text-[11px] text-[var(--color-danger)]">{error}</p> : null}
+      {error ? <p className="mt-[6px] font-body text-[12px] text-[var(--color-danger)]">{error}</p> : null}
     </div>
   );
 };
@@ -2244,11 +2244,11 @@ const Checkout = () => {
               <div className="min-w-0 flex-1">
                 <p className="truncate font-display text-[14px] italic text-[var(--color-muted)]">{item.name}</p>
                 {item.variant_label ? (
-                  <p className="mt-[3px] mb-[6px] font-body text-[10px] tracking-[0.05em] text-[var(--color-muted)]">
+                  <p className="mb-[6px] mt-[3px] font-body text-[12px] text-[var(--color-muted)]">
                     {item.variant_label}
                   </p>
                 ) : null}
-                <p className="font-body text-[11px] text-[var(--color-muted)]">Qty: {item.quantity}</p>
+                <p className="font-body text-[12px] text-[var(--color-muted)]">Qty: {item.quantity}</p>
               </div>
 
               <p className="text-right font-body text-[12px] text-[var(--color-primary)]">
@@ -2304,7 +2304,7 @@ const Checkout = () => {
               htmlFor={isMobile ? "discount-mobile" : "discount-desktop"}
               className={`pointer-events-none absolute left-0 font-body transition-all duration-200 ${
                 discountInput.trim().length > 0
-                  ? "top-[2px] text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]"
+                  ? "top-[4px] text-[11px] font-medium tracking-[0.04em] text-[var(--color-accent)]"
                   : "top-[20px] text-[14px] text-[var(--color-muted)]"
               }`}
             >
@@ -2316,18 +2316,18 @@ const Checkout = () => {
             type="button"
             onClick={() => void handleApplyDiscount()}
             disabled={isApplyingDiscount}
-            className="mt-2 ml-auto block font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)] disabled:opacity-60"
+            className="mt-2 ml-auto block font-body text-[12px] font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)] disabled:opacity-60"
           >
             {isApplyingDiscount ? "Applying..." : "Apply"}
           </button>
 
-          {discountSuccess ? <p className="mt-2 font-body text-[11px] text-[var(--color-success)]">{discountSuccess}</p> : null}
-          {discountError ? <p className="mt-2 font-body text-[11px] text-[var(--color-danger)]">{discountError}</p> : null}
+          {discountSuccess ? <p className="mt-2 font-body text-[12px] text-[var(--color-success)]">{discountSuccess}</p> : null}
+          {discountError ? <p className="mt-2 font-body text-[12px] text-[var(--color-danger)]">{discountError}</p> : null}
         </div>
       ) : null}
 
       {isValidating ? (
-        <p className="mt-5 font-body text-[11px] text-[var(--color-muted)]">Verifying latest prices and stock...</p>
+        <p className="mt-5 font-body text-[12px] text-[var(--color-muted)]">Verifying latest prices and stock...</p>
       ) : null}
     </div>
   );
@@ -2383,7 +2383,7 @@ const Checkout = () => {
                         </span>
 
                         <span
-                          className={`mt-2 font-body text-[10px] uppercase tracking-[0.12em] ${
+                          className={`mt-2 font-body text-[12px] font-medium ${
                             isActive ? "text-[var(--color-primary)]" : isCompleted ? "text-[var(--color-accent)]" : "text-[var(--color-muted-soft)]"
                           }`}
                         >
@@ -2405,10 +2405,10 @@ const Checkout = () => {
             </div>
 
             <div className="mb-8 flex items-center justify-between md:hidden">
-              <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-primary)]">
+              <p className="font-body text-[12px] font-medium text-[var(--color-primary)]">
                 {STEP_LABEL[currentStep]}
               </p>
-              <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              <p className="font-body text-[12px] text-[var(--color-muted)]">
                 Step {currentStepIndex + 1} of {CHECKOUT_STEPS.length}
               </p>
             </div>
@@ -2417,7 +2417,7 @@ const Checkout = () => {
               <div>
                 <h1 className="font-display text-[32px] italic text-[var(--color-primary)]">Contact Information</h1>
                 {isGuestCheckout ? (
-                  <p className="mt-2 font-body text-[11px] text-[var(--color-muted-soft)]">
+                  <p className="mt-2 font-body text-[12px] text-[var(--color-muted-soft)]">
                     Checking out as guest &#183;{" "}
                     <Link
                       to="/auth/login?redirect=/checkout/contact"
@@ -2453,7 +2453,7 @@ const Checkout = () => {
                       <button
                         type="button"
                         onClick={handleUseSavedDetails}
-                        className="rounded-[var(--border-radius)] bg-[var(--color-primary)] px-5 py-2 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-secondary)] transition-all duration-200 ease-in-out hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)]"
+                        className="lux-btn-primary lux-btn-compact"
                       >
                         Use Saved Details
                       </button>
@@ -2461,7 +2461,7 @@ const Checkout = () => {
                       <button
                         type="button"
                         onClick={handleDismissSavedDetails}
-                        className="ml-4 font-body text-[10px] uppercase tracking-[0.15em] text-[var(--color-muted-soft)] transition-colors duration-200 hover:text-[var(--color-primary)]"
+                        className="ml-4 font-body text-[12px] text-[var(--color-muted-soft)] transition-colors duration-200 hover:text-[var(--color-primary)]"
                       >
                         No thanks
                       </button>
@@ -2471,7 +2471,7 @@ const Checkout = () => {
 
                 {isSavedDetailsConfirmationVisible ? (
                   <p
-                    className={`mb-8 font-body text-[10px] text-[var(--color-accent)] transition-opacity duration-700 ${
+                    className={`mb-8 font-body text-[12px] text-[var(--color-accent)] transition-opacity duration-700 ${
                       isSavedDetailsConfirmationFading ? "opacity-0" : "opacity-100"
                     }`}
                   >
@@ -2590,7 +2590,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="self-start font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="self-start font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       &larr; Back
                     </button>
@@ -2598,7 +2598,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
+                      className="lux-btn-primary w-full md:w-auto"
                     >
                       Next Step
                     </button>
@@ -2639,7 +2639,7 @@ const Checkout = () => {
                         setIsManualAddressOpen(true);
                         setSelectedSavedAddressId(null);
                       }}
-                      className="mt-3 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)]"
+                      className="mt-3 font-body text-[12px] font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       Use a different address
                     </button>
@@ -2715,7 +2715,7 @@ const Checkout = () => {
                     </div>
 
                     {deliveryValues.state && shippingQuote ? (
-                      <p className="mt-2 font-body text-[11px] text-[var(--color-muted)]">
+                      <p className="mt-2 font-body text-[12px] text-[var(--color-muted)]">
                         Delivery to {deliveryValues.state}: {formatPrice(shippingQuote.fee)} {"\u00B7"}{" "}
                         {shippingQuote.minDays}-
                         {shippingQuote.maxDays} business days
@@ -2792,7 +2792,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="self-start font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="self-start font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       &larr; Back
                     </button>
@@ -2800,7 +2800,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
+                      className="lux-btn-primary w-full md:w-auto"
                     >
                       Next Step
                     </button>
@@ -2839,7 +2839,7 @@ const Checkout = () => {
                       >
                         <CreditCard size={28} strokeWidth={1.25} className="mb-4 text-[var(--color-accent)]" />
                         <p className="font-display text-[18px] italic text-[var(--color-primary)]">Pay Online</p>
-                        <p className="mt-1 font-body text-[11px] font-light text-[var(--color-muted)]">
+                        <p className="mt-1 font-body text-[12px] text-[var(--color-muted)]">
                           Pay securely with card or mobile money via Paystack
                         </p>
                       </button>
@@ -2865,7 +2865,7 @@ const Checkout = () => {
                       >
                         <Banknote size={28} strokeWidth={1.25} className="mb-4 text-[var(--color-accent)]" />
                         <p className="font-display text-[18px] italic text-[var(--color-primary)]">Cash on Delivery</p>
-                        <p className="mt-1 font-body text-[11px] font-light text-[var(--color-muted)]">
+                        <p className="mt-1 font-body text-[12px] text-[var(--color-muted)]">
                           Pay in cash when your order arrives
                         </p>
                       </button>
@@ -2882,7 +2882,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="self-start font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="self-start font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       &larr; Back
                     </button>
@@ -2890,7 +2890,7 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-12 py-4 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] md:w-auto"
+                      className="lux-btn-primary w-full md:w-auto"
                     >
                       Next Step
                     </button>
@@ -2919,7 +2919,7 @@ const Checkout = () => {
                       <div className="min-w-0 flex-1">
                         <p className="font-display text-[16px] italic text-[var(--color-muted)]">{item.name}</p>
                         {item.variant_label ? (
-                          <p className="mt-[3px] mb-[6px] font-body text-[10px] tracking-[0.05em] text-[var(--color-muted)]">
+                          <p className="mb-[6px] mt-[3px] font-body text-[12px] text-[var(--color-muted)]">
                             {item.variant_label}
                           </p>
                         ) : null}
@@ -2957,11 +2957,11 @@ const Checkout = () => {
 
                 <div className="mt-6 border-b border-[var(--color-border)] pb-6">
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]">Delivering to</p>
+                    <p className="font-body text-[11px] font-medium text-[var(--color-accent)]">Delivering to</p>
                     <button
                       type="button"
                       onClick={() => navigate(STEP_PATH.delivery)}
-                      className="font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       Edit
                     </button>
@@ -2979,11 +2979,11 @@ const Checkout = () => {
 
                 <div className="mt-6 border-b border-[var(--color-border)] pb-6">
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]">Contact</p>
+                    <p className="font-body text-[11px] font-medium text-[var(--color-accent)]">Contact</p>
                     <button
                       type="button"
                       onClick={() => navigate(STEP_PATH.contact)}
-                      className="font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       Edit
                     </button>
@@ -2998,11 +2998,11 @@ const Checkout = () => {
 
                 <div className="mt-6 border-b border-[var(--color-border)] pb-6">
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="font-body text-[10px] uppercase tracking-[0.12em] text-[var(--color-accent)]">Payment</p>
+                    <p className="font-body text-[11px] font-medium text-[var(--color-accent)]">Payment</p>
                     <button
                       type="button"
                       onClick={() => navigate(STEP_PATH.payment)}
-                      className="font-body text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                      className="font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                     >
                       Edit
                     </button>
@@ -3031,12 +3031,12 @@ const Checkout = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="mb-4 font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                    className="mb-4 font-body text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                   >
                     &larr; Back
                   </button>
 
-                  <p className="mb-4 font-body text-[11px] text-[var(--color-muted-soft)]">
+                  <p className="mb-4 font-body text-[12px] text-[var(--color-muted-soft)]">
                     By placing your order you agree to our{" "}
                     <Link to="/contact" className="text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]">
                       Terms &amp; Conditions
@@ -3073,7 +3073,7 @@ const Checkout = () => {
                     type="button"
                     onClick={() => void handleConfirmOrder()}
                     disabled={submissionPhase !== "idle"}
-                    className="w-full rounded-[var(--border-radius)] bg-[var(--color-primary)] px-4 py-5 font-body text-[11px] uppercase tracking-[0.18em] text-[var(--color-secondary)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-65"
+                    className="lux-btn-primary w-full disabled:pointer-events-none disabled:opacity-65"
                   >
                     {submissionPhase === "verifying"
                       ? "Verifying..."
@@ -3101,7 +3101,7 @@ const Checkout = () => {
 
           <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto bg-[var(--color-secondary)] px-5 pb-6 pt-5">
             <div className="mb-4 flex items-center justify-between">
-              <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
+              <p className="font-body text-[12px] font-medium text-[var(--color-muted)]">
                 {orderItemCountLabel} {"\u00B7"} {formatPrice(subtotal)}
               </p>
               <button

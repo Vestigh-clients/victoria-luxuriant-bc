@@ -95,15 +95,15 @@ const slides: HeroSlide[] = [
 ];
 
 const ctaBaseClass =
-  "inline-flex cursor-pointer items-center justify-center rounded-sm border border-[var(--color-secondary)] bg-[var(--color-secondary)] px-10 py-4 font-body text-[11px] uppercase tracking-[0.2em] text-[var(--color-primary)] transition-all duration-300";
+  "inline-flex cursor-pointer items-center justify-center rounded-[var(--border-radius)] border px-8 py-3 font-body text-[12px] font-medium uppercase tracking-[0.1em] transition-all duration-300";
 
 const ctaClassByStyle: Record<HeroCtaStyle, string> = {
   outline:
-    "hover:border-[var(--color-secondary)] hover:bg-[rgba(var(--color-primary-rgb),0.92)] hover:text-[var(--color-secondary)]",
+    "border-[var(--color-secondary)] bg-transparent text-[var(--color-secondary)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]",
   solid:
-    "hover:border-[var(--color-secondary)] hover:bg-[rgba(var(--color-primary-rgb),0.92)] hover:text-[var(--color-secondary)]",
+    "border-[var(--color-secondary)] bg-[var(--color-secondary)] text-[var(--color-primary)] hover:bg-transparent hover:text-[var(--color-secondary)]",
   bronze:
-    "hover:border-[var(--color-secondary)] hover:bg-[rgba(var(--color-primary-rgb),0.92)] hover:text-[var(--color-secondary)]",
+    "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-accent-contrast)] hover:border-[var(--color-secondary)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]",
 };
 
 type SlideDirection = "next" | "prev";
@@ -302,7 +302,7 @@ const Index = () => {
                     style={getEnteringTextStyle(isEntering, ENTERING_TEXT_DELAYS_MS.label)}
                   >
                     <span className="h-[2px] w-6 bg-[var(--color-accent)]" aria-hidden="true" />
-                    <p className="font-body text-[10px] font-light uppercase tracking-[0.3em] text-[var(--color-accent)]">
+                    <p className="font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--color-accent)]">
                       {slide.label}
                     </p>
                   </div>
@@ -315,7 +315,7 @@ const Index = () => {
                   </h1>
 
                   <p
-                    className={`mb-[36px] max-w-[420px] font-body text-[15px] font-light text-[rgba(var(--color-secondary-rgb),0.7)] ${isEntering ? "transition-[transform,opacity]" : ""} ${getTextAnimationClass(isEntering)}`}
+                    className={`mb-[36px] max-w-[440px] font-body text-[16px] leading-[1.65] text-[rgba(var(--color-secondary-rgb),0.82)] ${isEntering ? "transition-[transform,opacity]" : ""} ${getTextAnimationClass(isEntering)}`}
                     style={getEnteringTextStyle(isEntering, ENTERING_TEXT_DELAYS_MS.subtext)}
                   >
                     {slide.subtext}
@@ -391,23 +391,26 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mb-4 flex items-center justify-center gap-3">
               <span className="h-[2px] w-6 bg-[var(--color-accent)]" aria-hidden="true" />
-              <p className="text-center font-body text-[10px] font-light uppercase tracking-[0.3em] text-[var(--color-accent)]">
+              <p className="text-center font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--color-accent)]">
                 Our Collections
               </p>
             </div>
             <h2 className="mb-2 text-center font-display text-[42px] font-normal italic text-foreground">Shop by Category</h2>
-            <p className="mx-auto mb-12 max-w-2xl text-center font-body text-[14px] font-light text-[var(--color-muted)]">
+            <p className="mx-auto mb-12 max-w-2xl text-center font-body text-[15px] text-[var(--color-muted)]">
               Considered categories for wardrobe staples, elevated accessories, and restorative hair care.
             </p>
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5 lg:gap-8">
-              {enabledCategories.map((category) => (
-                <CategoryCard
-                  key={category.slug}
-                  name={category.name}
-                  slug={category.slug}
-                  imageUrl={category.imageUrl}
-                />
-              ))}
+            <div className="overflow-hidden border-l border-t border-[rgba(var(--color-primary-rgb),0.08)]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+                {enabledCategories.map((category) => (
+                  <div key={category.slug} className="border-b border-r border-[rgba(var(--color-primary-rgb),0.08)]">
+                    <CategoryCard
+                      name={category.name}
+                      slug={category.slug}
+                      imageUrl={category.imageUrl}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

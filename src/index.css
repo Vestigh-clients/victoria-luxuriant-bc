@@ -33,7 +33,7 @@
     --color-success-rgb: 46, 125, 50;
     --color-border-rgb: 72, 67, 63;
 
-    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-heading: 'Cormorant Garamond', serif;
     --font-body: 'Inter', system-ui, sans-serif;
     --border-radius: 0.75rem;
 
@@ -87,8 +87,8 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
-    font-weight: 300;
-    line-height: 1.6;
+    font-weight: 400;
+    line-height: 1.58;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -169,6 +169,141 @@
 @layer components {
   .lux-catalog-scope {
     --border-color: var(--color-primary-rgb, 242, 234, 224);
+  }
+
+  .lux-surface-card {
+    border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+    border-radius: var(--border-radius);
+    background: var(--color-secondary);
+    box-shadow: 0 6px 20px rgba(var(--color-primary-rgb), 0.04);
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  .lux-surface-card:hover {
+    border-color: rgba(var(--color-primary-rgb), 0.2);
+    box-shadow: 0 14px 30px rgba(var(--color-primary-rgb), 0.08);
+    transform: translateY(-2px);
+  }
+
+  .lux-kicker {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .lux-kicker-accent {
+    color: var(--color-accent);
+  }
+
+  .lux-copy-sm {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .lux-copy-md {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  .lux-copy-muted {
+    color: var(--color-muted-soft);
+  }
+
+  .lux-btn-primary,
+  .lux-btn-secondary,
+  .lux-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    border-radius: var(--border-radius);
+    padding: 0 20px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, opacity 180ms ease;
+  }
+
+  .lux-btn-primary {
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    box-shadow: 0 10px 22px rgba(var(--color-primary-rgb), 0.14);
+  }
+
+  .lux-btn-primary:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-accent-contrast);
+  }
+
+  .lux-btn-secondary {
+    border: 1px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-primary);
+  }
+
+  .lux-btn-secondary:hover {
+    background: var(--color-primary);
+    color: var(--color-secondary);
+  }
+
+  .lux-btn-ghost {
+    border: 1px solid rgba(var(--color-primary-rgb), 0.18);
+    background: rgba(var(--color-primary-rgb), 0.04);
+    color: var(--color-primary);
+  }
+
+  .lux-btn-ghost:hover {
+    border-color: rgba(var(--color-primary-rgb), 0.3);
+    background: rgba(var(--color-primary-rgb), 0.08);
+  }
+
+  .lux-btn-primary:disabled,
+  .lux-btn-secondary:disabled,
+  .lux-btn-ghost:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow: none;
+  }
+
+  .lux-btn-compact {
+    min-height: 44px;
+    padding: 0 16px;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+  }
+
+  .lux-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.14);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--color-muted);
+    background: rgba(var(--color-primary-rgb), 0.03);
+  }
+
+  .lux-pill-accent {
+    border-color: rgba(var(--color-accent-rgb), 0.5);
+    background: rgba(var(--color-accent-rgb), 0.1);
+    color: var(--color-accent);
   }
 
   .lux-catalog-scope *,

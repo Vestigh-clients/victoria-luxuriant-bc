@@ -12,16 +12,7 @@ const BORDER_RADIUS_BY_PRESET: Record<StoreConfig["theme"]["borderRadius"], stri
   sm: "0.25rem",
   md: "0.5rem",
   lg: "0.75rem",
-};
-
-const ADMIN_LIGHT_THEME: StoreConfig["theme"] = {
-  primaryColor: "#463A33",
-  secondaryColor: "#FFFFFF",
-  accentColor: "#F7F2E8",
-  navbarSolidBackgroundColor: "#F7F2E8",
-  fontHeading: storeConfig.theme.fontHeading,
-  fontBody: storeConfig.theme.fontBody,
-  borderRadius: storeConfig.theme.borderRadius,
+  xl: "1rem",
 };
 
 const normalizeHex = (input: string): string => {
@@ -200,7 +191,7 @@ const resolveThemePalette = (theme: StoreConfig["theme"]) => {
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const theme = useMemo(() => (isAdminRoute ? ADMIN_LIGHT_THEME : storeConfig.theme), [isAdminRoute]);
+  const theme = useMemo(() => (isAdminRoute ? storeConfig.adminTheme : storeConfig.theme), [isAdminRoute]);
   const palette = useMemo(() => resolveThemePalette(theme), [theme]);
 
   useLayoutEffect(() => {

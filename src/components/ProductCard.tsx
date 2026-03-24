@@ -17,14 +17,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
   }, [image, product.id]);
 
   return (
-    <div className="group bg-card rounded-[var(--border-radius)] overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(var(--color-primary-rgb),0.12)]">
+    <div className="group lux-surface-card overflow-hidden">
       <Link to={`/shop/${product.slug}`} className="block">
         <div className="relative w-full overflow-hidden" style={{ aspectRatio: "3/4" }}>
           {image && !hasImageError ? (
             <img
               src={image}
               alt={product.name}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
               loading="lazy"
               onError={() => setHasImageError(true)}
             />
@@ -34,12 +34,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       </Link>
 
-      <div className="pt-5 pb-1 text-left">
+      <div className="px-4 pb-5 pt-4 text-left">
         <Link to={`/shop/${product.slug}`}>
-          <h3 className="font-display text-[1.35rem] md:text-[1.5rem] font-normal italic leading-tight">{product.name}</h3>
+          <h3 className="font-body text-[15px] font-medium leading-snug text-[var(--color-primary)]">{product.name}</h3>
         </Link>
-        <p className="font-body font-light text-lg mt-3">{formatPrice(product.price)}</p>
-
+        <p className="mt-1 font-body text-[14px] text-[var(--color-muted)]">{formatPrice(product.price)}</p>
       </div>
     </div>
   );
